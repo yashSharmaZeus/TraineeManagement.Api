@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using TraineeManagement.Api.Models;
 using TraineeManagement.Api.DTO;
-using TraineeManagement.Api.Data;
-using Newtonsoft.Json.Serialization;
 using TraineeManagement.Api.Services;
 namespace TraineeManagement.Api.Controllers;
 
@@ -11,8 +8,9 @@ namespace TraineeManagement.Api.Controllers;
 [Route("/api/[controller]")]
 public class TraineesController : ControllerBase
 {
-     private ITraineeService _iTraineeServices;
-    public TraineesController(ITraineeService iTraineeServices){
+    private ITraineeService _iTraineeServices;
+    public TraineesController(ITraineeService iTraineeServices)
+    {
         _iTraineeServices = iTraineeServices;
     }
 
@@ -32,10 +30,26 @@ public class TraineesController : ControllerBase
         }
         return Ok(response);
     }
+
     [HttpPost]
     public IActionResult AddNew(CreateTraineeRequest request)
     {
         TraineeResponse response = _iTraineeServices.AddNew(request);
         return StatusCode(201, response);
+    }
+
+    [HttpPut("{id:int}")]
+    public IActionResult UpdateTrainee(int id, UpdateTraineeRequest request)
+    {
+        TraineeResponse? response = _iTraineeServices.UpdateTrainee(id, request);
+        if (response == null) return NotFound(new { message = $"Trainee with ID {id} not found" });
+        return Ok(response);
+    }
+
+    [HttpDelete]
+    public IActionResult DeleteTrainee(int id)
+    {
+        bool res = _iTraineeServices.DeleteTrainee(id);
+        return res ? NoContent() : NotFound(new { message = $"Trainee with ID {id} not found" });
     }
 }

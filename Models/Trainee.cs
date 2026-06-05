@@ -8,7 +8,6 @@ public class Trainee
     public required string? Email { get; set; }
     public string? TechStack { get; set; }
     public string? Status { get; set; }
-    public bool IsComplete { get; set; }
-    public DateTime CreatedDate { get; set; }
-    public DateTime UpdatedDate { get; set; }
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public DateTime UpdatedDate { get; set; } = DateTime.Now;
 }
