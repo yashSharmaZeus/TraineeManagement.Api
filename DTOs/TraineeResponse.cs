@@ -16,6 +16,7 @@ public class TraineeResponse
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
 
+
     public TraineeResponse(Trainee trainee)
     {
         Id = trainee.Id;

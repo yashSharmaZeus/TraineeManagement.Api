@@ -28,14 +28,14 @@ public class TraineesController : ControllerBase
         {
             return NotFound(new { message = $"Trainee with ID {id} not found" });
         }
-        return Ok(response);
+        return Ok(response); 
     }
 
     [HttpPost]
     public IActionResult AddNew(CreateTraineeRequest request)
     {
         TraineeResponse response = _iTraineeServices.AddNew(request);
-        return StatusCode(201, response);
+        return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
     [HttpPut("{id:int}")]

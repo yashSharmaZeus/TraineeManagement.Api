@@ -57,6 +57,7 @@ public class TraineeService : ITraineeService
         Trainee? trainee = TraineeStore.trainees.Find(t => t.Id == id);
         if (trainee == null) return false;
         TraineeStore.trainees.Remove(trainee);
+        
         return true;
     }
 }
