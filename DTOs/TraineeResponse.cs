@@ -11,8 +11,10 @@ public class TraineeResponse
     public string LastName { get; set; } = string.Empty;
     [Required(ErrorMessage = "Email is required")]
     public string Email { get; set; } = string.Empty;
-    public string? TechStack { get; set; }
-    public string? Status { get; set; }
+    public string TechStack { get; set; }
+    [Required(ErrorMessage = "Tech stack is required")]
+    public string Status { get; set; }
+    [Required(ErrorMessage = "Status is required")]
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
 

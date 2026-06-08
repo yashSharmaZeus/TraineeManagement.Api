@@ -1,47 +1,60 @@
 using TraineeManagement.Api.DTO;
 using TraineeManagement.Api.Data;
 using TraineeManagement.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TraineeManagement.Api.Services;
 
 public class TraineeService : ITraineeService
 {
-    public List<TraineeResponse> GetAll()
+    private readonly AppDbContext _context;
+    public TraineeService(AppDbContext context)
     {
-        List<TraineeResponse> response = TraineeStore.trainees.Select(t => new TraineeResponse(t)).ToList();
-        return response;
+        _context = context;
     }
 
-    public TraineeResponse? GetById(int id)
+    public async Task<List<TraineeResponse>> GetAll(String? search = null)
     {
-        Trainee? trainee = TraineeStore.trainees.Find(t => t.Id == id);
-        if (trainee == null)
+        IQueryable<Trainee> query = _context.Trainees;
+        if (!string.IsNullOrWhiteSpace(search))
         {
-            return null;
+            string term = search.ToLower();
+            query = query.Where(t =>
+                t.FirstName.ToLower().Contains(term) ||
+                t.LastName.ToLower().Contains(term) ||
+                t.Email.ToLower().Contains(term) ||
+                t.TechStack.ToLower().Contains(term)
+            );  
         }
-        TraineeResponse response = new TraineeResponse(trainee);
-        return response;
+        return await query.Select(t => new TraineeResponse(t)).ToListAsync();
     }
 
-    public TraineeResponse AddNew(CreateTraineeRequest request)
+    public async Task<TraineeResponse?> GetById(int id)
+    {
+        Trainee? trainee = await _context.Trainees.FindAsync(id);
+        if (trainee == null) return null;
+        return new TraineeResponse(trainee);
+    }
+
+    public async Task<TraineeResponse> AddNew(CreateTraineeRequest request)
     {
         Trainee trainee = new Trainee
-        {   Id = TraineeStore.GetNextId(),
+        {
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
             TechStack = request.TechStack,
             Status = request.Status,
         };
-        TraineeStore.trainees.Add(trainee);
-
-        TraineeResponse response = new TraineeResponse(trainee);
-        return response;
+        await _context.Trainees.AddAsync(trainee);
+        await _context.SaveChangesAsync();
+        Console.Write(_context.Trainees.Count());
+        return new TraineeResponse(trainee);
     }
 
-    public TraineeResponse? UpdateTrainee(int id, UpdateTraineeRequest request)
+    public async Task<TraineeResponse?> UpdateTrainee(int id, UpdateTraineeRequest request)
     {
-        Trainee? trainee = TraineeStore.trainees.Find(t => t.Id == id);
+        Trainee? trainee = await _context.Trainees.FindAsync(id);
         if (trainee == null) return null;
         trainee.FirstName = request.FirstName;
         trainee.LastName = request.LastName;
@@ -49,15 +62,17 @@ public class TraineeService : ITraineeService
         trainee.TechStack = request.TechStack;
         trainee.Status = request.Status;
         trainee.UpdatedDate = DateTime.Now;
-        return GetById(id);
+        await _context.SaveChangesAsync();
+        return await GetById(id);
     }
 
-    public bool DeleteTrainee(int id)
+    public async Task<bool> DeleteTrainee(int id)
     {
-        Trainee? trainee = TraineeStore.trainees.Find(t => t.Id == id);
+        Trainee? trainee = await _context.Trainees.FindAsync(id);
         if (trainee == null) return false;
-        TraineeStore.trainees.Remove(trainee);
-        
+        _context.Trainees.Remove(trainee);
+        await _context.SaveChangesAsync();
+
         return true;
     }
 }

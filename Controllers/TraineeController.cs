@@ -15,15 +15,15 @@ public class TraineesController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAll()
-    {
-        return Ok(_iTraineeServices.GetAll());
+    public async Task<IActionResult> GetAll(string? search = null)
+    {   List<TraineeResponse> res = await _iTraineeServices.GetAll(search);
+        return Ok(res);
     }
 
     [HttpGet("{id:int}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        TraineeResponse? response = _iTraineeServices.GetById(id);
+        TraineeResponse? response = await _iTraineeServices.GetById(id);
         if (response == null)
         {
             return NotFound(new { message = $"Trainee with ID {id} not found" });
@@ -32,24 +32,24 @@ public class TraineesController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddNew(CreateTraineeRequest request)
+    public async Task<IActionResult> AddNew(CreateTraineeRequest request)
     {
-        TraineeResponse response = _iTraineeServices.AddNew(request);
+        TraineeResponse response = await _iTraineeServices.AddNew(request);
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
     [HttpPut("{id:int}")]
-    public IActionResult UpdateTrainee(int id, UpdateTraineeRequest request)
+    public async Task<IActionResult> UpdateTrainee(int id, UpdateTraineeRequest request)
     {
-        TraineeResponse? response = _iTraineeServices.UpdateTrainee(id, request);
+        TraineeResponse? response = await _iTraineeServices.UpdateTrainee(id, request);
         if (response == null) return NotFound(new { message = $"Trainee with ID {id} not found" });
         return Ok(response);
     }
 
     [HttpDelete("{id:int}")]
-    public IActionResult DeleteTrainee(int id)
+    public async Task<IActionResult> DeleteTrainee(int id)
     {
-        bool res = _iTraineeServices.DeleteTrainee(id);
+        bool res = await _iTraineeServices.DeleteTrainee(id);
         return res ? NoContent() : NotFound(new { message = $"Trainee with ID {id} not found" });
     }
 }

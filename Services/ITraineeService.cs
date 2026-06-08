@@ -4,9 +4,9 @@ namespace TraineeManagement.Api.Services;
 
 public interface ITraineeService
 {
-    List<TraineeResponse> GetAll();
-    TraineeResponse? GetById(int id);
-    TraineeResponse AddNew(CreateTraineeRequest request);
-    TraineeResponse? UpdateTrainee(int id,UpdateTraineeRequest request);
-    bool DeleteTrainee(int id);
+    Task<List<TraineeResponse>> GetAll(String? search);
+    Task<TraineeResponse?> GetById(int id);
+    Task<TraineeResponse> AddNew(CreateTraineeRequest request);
+    Task<TraineeResponse?> UpdateTrainee(int id,UpdateTraineeRequest request);
+    Task<bool> DeleteTrainee(int id);
 }
