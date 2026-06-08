@@ -46,7 +46,7 @@ public class TraineesController : ControllerBase
         return Ok(response);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id:int}")]
     public IActionResult DeleteTrainee(int id)
     {
         bool res = _iTraineeServices.DeleteTrainee(id);

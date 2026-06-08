@@ -46,6 +46,7 @@ public class TraineeService : ITraineeService
         trainee.FirstName = request.FirstName;
         trainee.LastName = request.LastName;
         trainee.Email = request.Email;
+        trainee.TechStack = request.TechStack;
         trainee.Status = request.Status;
         trainee.UpdatedDate = DateTime.Now;
         return GetById(id);
