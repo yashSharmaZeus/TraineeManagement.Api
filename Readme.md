@@ -38,7 +38,7 @@ dotnet run
 **Example Request:**
 ```bash
 curl -X 'GET' \
-  'http://localhost:5214/api/Health' \
+  'https://<YOUR_BASE_URL>/api/Health' \
   -H 'accept: */*'
 ```
 **Example Response**
@@ -55,7 +55,7 @@ Return all trainee from Database
 **Example Request:**
 ```bash
 curl -X 'GET' \
-  'http://localhost:5214/api/Trainees' \
+  'https://<YOUR_BASE_URL>/api/Trainees' \
   -H 'accept: */*'
 ```
 **Example response**
@@ -87,7 +87,7 @@ curl -X 'GET' \
 **Example Request:**
 ```bash
 curl -X 'GET' \
-  'http://localhost:5214/api/Trainees/1' \
+  'https://<YOUR_BASE_URL>/api/Trainees/1' \
   -H 'accept: */*'
 ```
 **Example response**
@@ -107,7 +107,7 @@ curl -X 'GET' \
 **Example Request:**
 ```bash
 curl -X 'POST' \
-  'http://localhost:5214/api/Trainees' \
+  'https://<YOUR_BASE_URL>/api/Trainees' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{  
@@ -135,7 +135,7 @@ curl -X 'POST' \
 **Example Request:**
 ```bash
 curl -X 'PUT' \
-  'http://localhost:5214/api/Trainees/1' \
+  'https://<YOUR_BASE_URL>/api/Trainees/1' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -163,7 +163,7 @@ curl -X 'PUT' \
 **Example Request:**
 ```bash
 curl -X 'DELETE' \
-  'http://localhost:5214/api/Trainees/1' \
+  'https://<YOUR_BASE_URL>/api/Trainees/1' \
   -H 'accept: */*'
 ```
 **Example response**
@@ -174,7 +174,7 @@ status code 204
 **Example Request:**
 ```bash
 curl -X 'GET' \
-  'http://localhost:5214/api/Trainees?search=Amit' \
+  'https://<YOUR_BASE_URL>/api/Trainees?search=Amit' \
   -H 'accept: */*'
 ```
 **Example response**
