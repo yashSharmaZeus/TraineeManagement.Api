@@ -69,7 +69,9 @@ public class TraineeService : ITraineeService
     public async Task<bool> DeleteTrainee(int id)
     {
         Trainee? trainee = await _context.Trainees.FindAsync(id);
+        
         if (trainee == null) return false;
+        
         _context.Trainees.Remove(trainee);
         await _context.SaveChangesAsync();
 

@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TraineeManagement.Api.DTO;
 using TraineeManagement.Api.Services;
+
 namespace TraineeManagement.Api.Controllers;
 
 [ApiController]

@@ -1,4 +1,5 @@
 using TraineeManagement.Api.Helpers;
+
 namespace TraineeManagement.Api.Models;
 
 public class Trainee
