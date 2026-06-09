@@ -2,6 +2,7 @@ using TraineeManagement.Api.DTO;
 using TraineeManagement.Api.Data;
 using TraineeManagement.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using TraineeManagement.Api.Helpers;
 
 namespace TraineeManagement.Api.Services;
 
@@ -48,7 +49,6 @@ public class TraineeService : ITraineeService
         };
         await _context.Trainees.AddAsync(trainee);
         await _context.SaveChangesAsync();
-        Console.Write(_context.Trainees.Count());
         return new TraineeResponse(trainee);
     }
 
@@ -61,7 +61,7 @@ public class TraineeService : ITraineeService
         trainee.Email = request.Email;
         trainee.TechStack = request.TechStack;
         trainee.Status = request.Status;
-        trainee.UpdatedDate = DateTime.Now;
+        trainee.UpdatedDate = DateHelper.Now();
         await _context.SaveChangesAsync();
         return await GetById(id);
     }

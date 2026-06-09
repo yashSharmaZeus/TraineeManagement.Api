@@ -1,27 +1,35 @@
 using System.ComponentModel.DataAnnotations;
 using TraineeManagement.Api.Models;
+
+using TraineeManagement.Api.Constants;
 namespace TraineeManagement.Api.DTO;
 
 public class TraineeResponse
 {
-    public int? Id { get; set; }
-    [Required(ErrorMessage = "First name is required")]
-    public string FirstName { get; set; } = string.Empty;
-    [Required(ErrorMessage = "Last name is required")]
-    public string LastName { get; set; } = string.Empty;
-    [Required(ErrorMessage = "Email is required")]
-    public string Email { get; set; } = string.Empty;
-    public string TechStack { get; set; }
-    [Required(ErrorMessage = "Tech stack is required")]
-    public string Status { get; set; }
-    [Required(ErrorMessage = "Status is required")]
-    public DateTime CreatedDate { get; set; }
-    public DateTime UpdatedDate { get; set; }
+    public int Id { get; set; }
 
+    [Required(ErrorMessage = StringConstant.FIRST_NAME_REQUIRED)]
+    public string FirstName { get; set; } 
+
+    [Required(ErrorMessage = StringConstant.LAST_NAME_REQUIRED)]
+    public string LastName { get; set; } 
+
+    [Required(ErrorMessage = StringConstant.EMAIL_REQUIRED)]
+    public string Email { get; set; } 
+
+    [Required(ErrorMessage = StringConstant.TECH_STACK_REQUIRED)]
+    public string TechStack { get; set; }
+
+    [Required(ErrorMessage = StringConstant.STATUS_REQUIRED)]
+    public string Status { get; set; }
+
+    public DateTime CreatedDate { get; set; }
+
+    public DateTime UpdatedDate { get; set; }
 
     public TraineeResponse(Trainee trainee)
     {
-        Id = trainee.Id;
+        Id = trainee.Id ;
         FirstName = trainee.FirstName;
         LastName = trainee.LastName;
         Email = trainee.Email;

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using TraineeManagement.Api.Helpers;
 
 namespace TraineeManagement.Api.Controllers;
 
@@ -15,7 +16,7 @@ public class HealthController : ControllerBase
             {
                 status = "running",
                 application = "Trainee Management API",
-                timestamp = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
+                timestamp = DateHelper.Now(),
             });
     }
 }

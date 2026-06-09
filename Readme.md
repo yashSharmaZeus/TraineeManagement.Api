@@ -68,8 +68,8 @@ curl -X 'GET' \
     "email": "amit.sharma@training.com",
     "techStack": "HTML, CSS, JavaScript",
     "status": "Active",
-    "createdDate": "2026-06-08T16:22:17.3158584+05:30",
-    "updatedDate": "2026-06-08T16:22:17.3158615+05:30"
+    "createdDate": "2026-06-08T16:22:17",
+    "updatedDate": "2026-06-08T16:22:17"
   },
   {
     "id": 5,
@@ -78,8 +78,8 @@ curl -X 'GET' \
     "email": "amit.sharma@training.com",
     "techStack": "HTML, CSS, JavaScript",
     "status": "Active",
-    "createdDate": "2026-06-08T16:22:29.7885427+05:30",
-    "updatedDate": "2026-06-08T16:22:29.7885497+05:30"
+    "createdDate": "2026-06-08T16:22:29",
+    "updatedDate": "2026-06-08T16:22:29"
   }
 ]
 ```
@@ -99,8 +99,8 @@ curl -X 'GET' \
   "email": "amit.sharma@training.com",
   "techStack": "HTML, CSS, JavaScript",
   "status": "Active",
-  "createdDate": "2026-06-08T16:22:29.7885427+05:30",
-  "updatedDate": "2026-06-08T16:22:29.7885497+05:30"
+  "createdDate": "2026-06-08T16:22:29",
+  "updatedDate": "2026-06-08T16:22:29"
 }
 ```
 ### `POST` `/api/trainees`
@@ -127,8 +127,8 @@ curl -X 'POST' \
   "email": "amit.sharma@training.com",
   "techStack": "HTML, CSS, JavaScript",
   "status": "Active",
-  "createdDate": "2026-06-08T16:22:29.7885427+05:30",
-  "updatedDate": "2026-06-08T16:22:29.7885497+05:30"
+  "createdDate": "2026-06-08T16:22:29",
+  "updatedDate": "2026-06-08T16:22:29"
 }
 ```
 ### `PUT` `/api/trainees/{id}`
@@ -155,8 +155,8 @@ curl -X 'PUT' \
   "email": "amit.sharma@training.com",
   "techStack": "HTML, CSS, JavaScript",
   "status": "Inactive",
-  "createdDate": "2026-06-08T16:14:02.2257949+05:30",
-  "updatedDate": "2026-06-08T16:16:06.9358172+05:30"
+  "createdDate": "2026-06-08T16:14:02",
+  "updatedDate": "2026-06-08T16:16:06"
 }
 ```
 ### `DELETE` `/api/trainees/{id}`
@@ -179,16 +179,28 @@ curl -X 'GET' \
 ```
 **Example response**
 ```json
-{
-  "id": 1,
-  "firstName": "Amit",
-  "lastName": "Sharma",
-  "email": "amit.sharma@training.com",
-  "techStack": "HTML, CSS, JavaScript",
-  "status": "Inactive",
-  "createdDate": "2026-06-08T16:14:02.2257949+05:30",
-  "updatedDate": "2026-06-08T16:16:06.9358172+05:30"
-}
+[
+  {
+    "id": 1,
+    "firstName": "Amit",
+    "lastName": "Sharma",
+    "email": "amit.sharma@training.com",
+    "techStack": "HTML, CSS, JavaScript",
+    "status": "Inactive",
+    "createdDate": "2026-06-08T16:14:02",
+    "updatedDate": "2026-06-08T16:16:06"
+  },
+  {
+    "id": 2,
+    "firstName": "Amit",
+    "lastName": "Verma",
+    "email": "amit.sharma1@training.com",
+    "techStack": "HTML, CSS, JavaScript",
+    "status": "Inactive",
+    "createdDate": "2026-06-08T16:14:02",
+    "updatedDate": "2026-06-08T16:16:06"
+  }
+]
 ```
 
 ## Known limitations
