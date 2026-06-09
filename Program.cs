@@ -12,8 +12,15 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<ITraineeService,TraineeService>();
 
+// builder.Services.AddDbContext<AppDbContext>(options =>
+//     options.UseInMemoryDatabase("TraineeManagementDb"));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+?? throw new InvalidOperationException("connection String: 'Default connections not found'");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("TraineeManagementDb"));
+    options.UseMySQL(
+        connectionString
+    ));
 
 var app = builder.Build();
 

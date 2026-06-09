@@ -2,7 +2,7 @@
 
 ## Technology Used
 - C# / ASP.NET Core Web API
-- EF Core InMemory Database
+- MySQL Database
 - Swagger
 
 ## How to Run
@@ -12,7 +12,16 @@
 git clone https://github.com/yashSharmaZeus/TraineeManagement.Api.git
 cd TraineeManagement.Api
 ```
-
+#### Modify Connection string in appsettings.json
+```json
+"ConnectionStrings": {
+    "DefaultConnection": "your-connection-string"
+  }
+```
+#### Apply migration changes to your database
+```bash
+dotnet ef database update
+```
 #### Run project
 ```bash
 dotnet run
@@ -35,6 +44,9 @@ dotnet run
 
 ### `GET` `/api/health`
 
+**Description:**
+ Returns the current health status of the application along with a timestamp.
+ 
 **Example Request:**
 ```bash
 curl -X 'GET' \
@@ -51,7 +63,10 @@ curl -X 'GET' \
 ```
 
 ### `GET` `/api/trainees`
-Return all trainee from Database
+
+**Description:**
+Retrieves all trainees. Supports optional search functionality using the search query parameter.
+
 **Example Request:**
 ```bash
 curl -X 'GET' \
@@ -84,6 +99,10 @@ curl -X 'GET' \
 ]
 ```
 ### `GET` `/api/trainees/{id}`
+
+**Description:**
+	Retrieves a specific trainee by their unique identifier.
+
 **Example Request:**
 ```bash
 curl -X 'GET' \
@@ -104,6 +123,10 @@ curl -X 'GET' \
 }
 ```
 ### `POST` `/api/trainees`
+
+**Description:**
+Creates a new trainee record and returns the created trainee details
+
 **Example Request:**
 ```bash
 curl -X 'POST' \
@@ -132,6 +155,10 @@ curl -X 'POST' \
 }
 ```
 ### `PUT` `/api/trainees/{id}`
+
+**Description:**
+Updates an existing trainee's information by ID.
+
 **Example Request:**
 ```bash
 curl -X 'PUT' \
@@ -160,6 +187,10 @@ curl -X 'PUT' \
 }
 ```
 ### `DELETE` `/api/trainees/{id}`
+
+**Description:**
+Deletes a trainee by ID. Returns 204 No Content on success
+
 **Example Request:**
 ```bash
 curl -X 'DELETE' \
@@ -171,6 +202,10 @@ curl -X 'DELETE' \
 status code 204
 ```
 ### `GET` `/api/trainees?search={query}`
+
+**Description:**
+Searches trainees by first name, last name, email, or tech stack.
+
 **Example Request:**
 ```bash
 curl -X 'GET' \
@@ -203,6 +238,7 @@ curl -X 'GET' \
 ]
 ```
 
+## Database setup steps
+
 ## Known limitations
-- InMemory database (not persistent)
 - No authentication
