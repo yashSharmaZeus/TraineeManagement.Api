@@ -39,14 +39,7 @@ public class TraineeService : ITraineeService
 
     public async Task<TraineeResponse> AddNew(CreateTraineeRequest request)
     {
-        Trainee trainee = new Trainee
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email,
-            TechStack = request.TechStack,
-            Status = request.Status,
-        };
+        Trainee trainee = new Trainee(request);
         await _context.Trainees.AddAsync(trainee);
         await _context.SaveChangesAsync();
         return new TraineeResponse(trainee);
@@ -63,6 +56,7 @@ public class TraineeService : ITraineeService
         trainee.Status = request.Status;
         trainee.UpdatedDate = DateHelper.Now();
         await _context.SaveChangesAsync();
+        
         return await GetById(id);
     }
 

@@ -238,7 +238,31 @@ curl -X 'GET' \
 ]
 ```
 
-## Database setup steps
+### `POST` `/api/auth/login`
 
-## Known limitations
-- No authentication
+**Description:**
+validate user using username , password and JWT
+
+**Example Request:**
+```bash
+curl -X 'POST' \
+  'http://localhost:5214/api/auth/Login' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "username": "Admin",
+    "password": "Admin@123"
+}'
+```
+**Example response**
+```json
+{
+  "jwtTokenValue": "jwt-token-value",
+  "expiresIn": 3600,
+  "user": {
+    "id": 1,
+    "username": "Admin",
+    "role": "Admin"
+  }
+}
+```

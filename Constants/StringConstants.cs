@@ -18,4 +18,13 @@ public class StringConstant
     public const string  STATUS_ACTIVE = "Active";
     public const string  STATUS_INACTIVE = "Inactive";
     public const string  STATUS_COMPLETED = "Completed";
+
+    public const string ROLE_ADMIN = "Admin";
+    public const string ROLE_MENTOR = "Mentor";
+    public const string ROLE_TRAINEE = "Trainee";
+
+    public const string USERNAME_REQUIRED = "UserName is required" ;
+
+    public const string PASSWORD_REQUIRED = "Password is required" ;
+
 }
