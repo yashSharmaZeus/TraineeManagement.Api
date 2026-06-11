@@ -4,7 +4,7 @@ namespace TraineeManagement.Api.Services;
 
 public interface ITraineeService
 {
-    Task<List<TraineeResponse>> GetAll(String? search);
+    Task<PagedResponse> GetAll(String? search,int pageNumber = 1,int pageSize = 10, string? status = null);
     Task<TraineeResponse?> GetById(int id);
     Task<TraineeResponse> AddNew(CreateTraineeRequest request);
     Task<TraineeResponse?> UpdateTrainee(int id,UpdateTraineeRequest request);

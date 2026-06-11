@@ -14,9 +14,12 @@ public class TraineeService : ITraineeService
         _context = context;
     }
 
-    public async Task<List<TraineeResponse>> GetAll(String? search = null)
+    public async Task<PagedResponse> GetAll(string? search = null,int pageNumber = 1,int pageSize = 10, string? status = null)
     {
-        IQueryable<Trainee> query = _context.Trainees;
+        IQueryable<Trainee> query = _context.Trainees;  
+
+        int TotalResponse = await query.CountAsync();
+
         if (!string.IsNullOrWhiteSpace(search))
         {
             string term = search.ToLower();
@@ -27,7 +30,17 @@ public class TraineeService : ITraineeService
                 t.TechStack.ToLower().Contains(term)
             );  
         }
-        return await query.Select(t => new TraineeResponse(t)).ToListAsync();
+
+        if (!string.IsNullOrWhiteSpace(status))
+        {
+            string term = status.ToLower();
+            query = query.Where(t => t.Status.ToLower() == term);
+        }
+
+        query =  query.Skip((pageNumber -1)*pageSize).Take(pageSize);
+        int TotalCount = await query.CountAsync();
+        List<TraineeResponse> trainees = await query.Select(t => new TraineeResponse(t)).ToListAsync();
+        return new PagedResponse(trainees, TotalCount ,pageNumber , pageSize);
     }
 
     public async Task<TraineeResponse?> GetById(int id)

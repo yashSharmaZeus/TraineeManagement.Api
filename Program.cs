@@ -18,6 +18,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -32,6 +33,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(secretKey)
         };
     });
+builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactFrontendApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000"," http://localhost:5713")
+        .AllowAnyHeader()
+        .WithMethods("GET","POST","PUT","DELETE");
+    });
+});
+
 builder.Services.AddScoped<JwtService>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -55,7 +68,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

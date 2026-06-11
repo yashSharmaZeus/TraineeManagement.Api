@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using TraineeManagement.Api.Data;
 using TraineeManagement.Api.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace TraineeManagement.Api.Services;
 
@@ -34,7 +33,7 @@ public class AuthService : IAuthService
         }
 
         string JwtToken = _jwtService.GenerateToken(dbUser.Id, dbUser.Username,dbUser.Role);
-        int expires = 3600;
+        int expires = Convert.ToInt32(60*60);
         UserResponse user = new UserResponse
         {
             Id = dbUser.Id,

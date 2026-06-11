@@ -14,11 +14,12 @@ public class JwtService
     {
         var jwtSettings = _config.GetSection("JwtSettings");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
+        // Console.WriteLine(jwtSettings["Key"]);
         var claims = new[]
         {
-            new Claim("UserId", userId.ToString()),
-            new Claim("Username", username),
-            new Claim("Role", role),
+            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new Claim(JwtRegisteredClaimNames.UniqueName, username),
+            new Claim(ClaimTypes.Role, role),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         var token = new JwtSecurityToken(
