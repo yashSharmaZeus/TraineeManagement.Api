@@ -10,19 +10,19 @@ namespace TraineeManagement.Api.Controllers;
 [Route("/api/[controller]")]
 public class TraineesController : ControllerBase
 {
-    private ITraineeService _iTraineeServices;
-    private ILogger<LoginController> _logger;
-    public TraineesController(ITraineeService iTraineeServices, ILogger<LoginController> logger)
+    private readonly ITraineeService _iTraineeServices;
+    private readonly ILogger<TraineesController> _logger;
+    public TraineesController(ITraineeService iTraineeServices, ILogger<TraineesController> logger)
     {
         _iTraineeServices = iTraineeServices;
         _logger = logger;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] TraineeRequestParameter requestParameter)
+    public async Task<IActionResult> GetAll([FromQuery] SearchRequestParameter requestParameter)
     {
-        PagedResponse res = await _iTraineeServices.GetAll(requestParameter.search, requestParameter.pageNumber, requestParameter.pageSize, requestParameter.status);
-        return Ok(res);
+        PagedResponse<TraineeResponse> response = await _iTraineeServices.GetAll(requestParameter.search, requestParameter.pageNumber, requestParameter.pageSize, requestParameter.status);
+        return Ok(response);
     }
 
     [HttpGet("{id:int}")]

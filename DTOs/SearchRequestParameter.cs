@@ -3,7 +3,7 @@ using TraineeManagement.Api.Constants;
 
 namespace TraineeManagement.Api.DTO;
 
-public class TraineeRequestParameter
+public class SearchRequestParameter
 {
     [Range(1, int.MaxValue,ErrorMessage =StringConstant.MINIMUM_PAGE_NUMBER)]
     public int pageNumber{get; set;} =1;

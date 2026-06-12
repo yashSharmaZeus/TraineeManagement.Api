@@ -13,12 +13,10 @@ public class TraineeService : ITraineeService
     {
         _context = context;
     }
-
-    public async Task<PagedResponse> GetAll(string? search = null,int pageNumber = 1,int pageSize = 10, string? status = null)
+    
+    public async Task<PagedResponse<TraineeResponse>> GetAll(string? search = null,int pageNumber = 1,int pageSize = 10, string? status = null)
     {
-        IQueryable<Trainee> query = _context.Trainees;  
-
-        int TotalResponse = await query.CountAsync();
+        IQueryable<Trainee> query = _context.Trainees; 
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -40,7 +38,7 @@ public class TraineeService : ITraineeService
         query =  query.Skip((pageNumber -1)*pageSize).Take(pageSize);
         int TotalCount = await query.CountAsync();
         List<TraineeResponse> trainees = await query.Select(t => new TraineeResponse(t)).ToListAsync();
-        return new PagedResponse(trainees, TotalCount ,pageNumber , pageSize);
+        return new PagedResponse<TraineeResponse>(trainees, TotalCount ,pageNumber , pageSize);
     }
 
     public async Task<TraineeResponse?> GetById(int id)
