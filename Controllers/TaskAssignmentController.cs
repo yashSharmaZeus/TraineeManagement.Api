@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TraineeManagement.Api.DTO;
-using TraineeManagement.Api.Helpers;
 using TraineeManagement.Api.Services;
 
 namespace TraineeManagement.Api.Controllers;
@@ -45,7 +44,7 @@ public class TaskAssignmentController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:int}/status")]
     public async Task<IActionResult> UpdateTrainee(int id, UpdateTaskAssignmentRequest request)
     {
         TaskAssignmentResponse? response = await _iTaskAssignmentService.Update(id, request);

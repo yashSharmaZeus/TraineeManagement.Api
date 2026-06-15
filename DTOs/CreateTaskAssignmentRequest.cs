@@ -14,7 +14,7 @@ public class CreateTaskAssignmentRequest
     [Required(ErrorMessage =StringConstant.LEARNING_TASK_ID_REQUIRED)]
     public int LearningTaskId  {get;set;}
 
-    [Required(ErrorMessage =StringConstant.ASSIGNED_DATE__REQUIRED)]
+    [Required(ErrorMessage =StringConstant.ASSIGNED_DATE_REQUIRED)]
     public DateTime AssignedDate {get; set;}
 
     [Required(ErrorMessage =StringConstant.DUE_DATE_REQUIRED)]

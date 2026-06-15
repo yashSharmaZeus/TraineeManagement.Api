@@ -43,12 +43,15 @@ public class StringConstant
     public const string MINIMUM_PAGE_SIZE = "Page size should be grater than 0";
 
     public const string DUE_DATE_REQUIRED = "DueDate Required";
+    public const string SUBMISSION_DATE_REQUIRED = "Submission date Required";
+    public const string SUBMISSION_URL_REQUIRED = "Submission url Required";
 
     public const string EXPECTED_TECH_STACK_REQUIRED = "Expected tech stack Required";
     public const string TRAINEE_ID_REQUIRED = "TraineeId is Required";
     public const string MENTOR_ID_REQUIRED = "MentorId is Required";
     public const string LEARNING_TASK_ID_REQUIRED = "LearningTaskId is Required";
-    public const string ASSIGNED_DATE__REQUIRED = "Assigned Date is Required";
+    public const string ASSIGNED_DATE_REQUIRED = "Assigned Date is Required";
+    public const string NOTES_REQUIRED = "Note is Required";
 
     public const string REMARK_MAX_CHARACTER = "Remark cannot exceed 50 character";
 }

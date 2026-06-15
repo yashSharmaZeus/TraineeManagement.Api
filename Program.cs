@@ -19,6 +19,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMentorService, MentorService>();
 builder.Services.AddScoped<ILearningTaskService, LearningTaskService>();
 builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
+builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);

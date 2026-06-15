@@ -31,5 +31,9 @@ public class GlobalEnums
         Completed,
     }
 
-    
+    public enum SubmissionStatus
+    {
+        Submitted ,
+        Resubmitted
+    }
 }
