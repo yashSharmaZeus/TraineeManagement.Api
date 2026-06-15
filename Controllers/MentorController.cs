@@ -5,7 +5,7 @@ using TraineeManagement.Api.Services;
 
 namespace TraineeManagement.Api.controllers;
 
-[Authorize]
+[Authorize(Roles ="Admin,Mentor")]
 [ApiController]
 [Route("/api/[controller]")]
 public class MentorsController : ControllerBase
