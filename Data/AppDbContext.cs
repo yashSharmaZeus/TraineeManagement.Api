@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<TraineeStatus> TraineeStatus {get;set;}
     public DbSet<MentorStatus> MentorStatus {get;set;}
     public DbSet<LearningTaskStatus> LearningTaskStatus {get;set;}
+    public DbSet<TaskAssignment> TaskAssignment {get;set;}
 
      protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
