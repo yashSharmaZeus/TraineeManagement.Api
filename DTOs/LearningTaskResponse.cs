@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using TraineeManagement.Api.Models;
 
 using TraineeManagement.Api.Constants;
+using TraineeManagement.Api.Enums;
 namespace TraineeManagement.Api.DTO;
 
 public class LearningTaskResponse
@@ -21,7 +22,7 @@ public class LearningTaskResponse
     public DateTime DueDate { get; set; }
 
     [Required(ErrorMessage = StringConstant.STATUS_REQUIRED)]
-    public string Status { get; set; }
+    public GlobalEnums.LearningTaskStatus Status { get; set; }
 
     public DateTime CreatedDate { get; set; }
 

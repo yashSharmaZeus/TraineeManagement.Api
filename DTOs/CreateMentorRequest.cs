@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using TraineeManagement.Api.Constants;
+using TraineeManagement.Api.Enums;
 
 namespace TraineeManagement.Api.DTO;
 
@@ -22,6 +23,5 @@ public class CreateMentorRequest
     public string Expertise { get; set; } = null!;
 
     [Required(ErrorMessage = StringConstant.STATUS_REQUIRED)]
-    [AllowedValues([StringConstant.STATUS_ACTIVE, StringConstant.STATUS_INACTIVE], ErrorMessage = StringConstant.VALID_STATUS_REQUIRED)]
-    public string Status { get; set; } = null!;
+    public GlobalEnums.MentorStatus Status { get; set; } 
 }

@@ -4,6 +4,7 @@ using TraineeManagement.Api.Data;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<ITraineeService, TraineeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMentorService, MentorService>();
-builder.Services.AddScoped<ILearningTaskService,LearningTaskService >();
+builder.Services.AddScoped<ILearningTaskService, LearningTaskService>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
@@ -41,11 +42,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactFrontendApp", policy =>
     {
-        policy.WithOrigins("http://localhost:3000"," http://localhost:5713")
+        policy.WithOrigins("http://localhost:3000", " http://localhost:5713")
         .AllowAnyHeader()
-        .WithMethods("GET","POST","PUT","DELETE");
+        .WithMethods("GET", "POST", "PUT", "DELETE");
     });
 });
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    }
+);
 
 builder.Services.AddScoped<JwtService>();
 
@@ -56,7 +63,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySQL(
         connectionString
     ));
-    
+
 // log4net
 builder.Logging.AddLog4Net("log4net.config");
 

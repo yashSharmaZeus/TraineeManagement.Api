@@ -32,7 +32,7 @@ public class LearningTaskService : ILearningTaskService
         if (!string.IsNullOrWhiteSpace(status))
         {
             string term = status.ToLower();
-            query = query.Where(t => t.Status.ToLower() == term);
+            query = query.Where(t => t.Status.ToString() == term);
         }
 
         query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);

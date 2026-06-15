@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using TraineeManagement.Api.Constants;
+using TraineeManagement.Api.Enums;
 
 namespace TraineeManagement.Api.DTO;
 
@@ -22,6 +23,5 @@ public class CreateTraineeRequest
     public string TechStack { get; set; } = null!;
 
     [Required(ErrorMessage =  StringConstant.STATUS_REQUIRED)]
-    [AllowedValues([StringConstant.STATUS_ACTIVE,StringConstant.STATUS_INACTIVE ,StringConstant.STATUS_COMPLETED ], ErrorMessage = StringConstant.VALID_STATUS_REQUIRED)]
-    public string Status { get; set; } = null!;
+    public GlobalEnums.TraineeStatus Status { get; set; } 
 }

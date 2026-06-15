@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using TraineeManagement.Api.Data;
 using TraineeManagement.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace TraineeManagement.Api.Services;
 
@@ -20,7 +21,7 @@ public class AuthService : IAuthService
     {
         string Username = request.Username;
         string Password = request.Password;
-
+        Console.WriteLine(ComputePasswordHash(Username,Password));
         User? dbUser = await _context.User.FirstOrDefaultAsync(u => u.Username == Username);
         if (dbUser == null)
         {

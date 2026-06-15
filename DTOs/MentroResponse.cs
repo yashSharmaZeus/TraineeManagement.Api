@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using TraineeManagement.Api.Models;
 
 using TraineeManagement.Api.Constants;
+using TraineeManagement.Api.Enums;
 namespace TraineeManagement.Api.DTO;
 
 public class MentorResponse
@@ -21,7 +22,7 @@ public class MentorResponse
     public string Expertise { get; set; }
 
     [Required(ErrorMessage = StringConstant.STATUS_REQUIRED)]
-    public string Status { get; set; }
+    public GlobalEnums.MentorStatus Status { get; set; }
 
     public DateTime CreatedDate { get; set; }
 

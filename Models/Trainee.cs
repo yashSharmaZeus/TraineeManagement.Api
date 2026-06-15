@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TraineeManagement.Api.DTO;
+using TraineeManagement.Api.Enums;
 using TraineeManagement.Api.Helpers;
 
 namespace TraineeManagement.Api.Models;
@@ -9,19 +11,24 @@ public class Trainee
     public int Id { get; set; }
 
     [Required]  
+    [Column(TypeName = "varchar(50)")]
     public string FirstName { get; set; } = null!;
 
     [Required]
+    [Column(TypeName = "varchar(50)")]
     public string LastName { get; set; } = null!;
 
     [Required]
+    [Column(TypeName = "varchar(50)")]
     public string Email { get; set; } = null!;
 
     [Required]
+    [Column(TypeName = "varchar(50)")]
     public string TechStack { get; set; } = null!;
 
     [Required]
-    public string Status { get; set; } = null!;
+    [Column(TypeName = "varchar(10)")]
+    public GlobalEnums.TraineeStatus Status { get; set; }
 
     [Required]
     public DateTime CreatedDate { get; set; }
