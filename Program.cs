@@ -56,6 +56,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySQL(
         connectionString
     ));
+    
+// log4net
+builder.Logging.AddLog4Net("log4net.config");
 
 var app = builder.Build();
 
