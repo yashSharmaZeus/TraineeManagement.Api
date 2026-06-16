@@ -20,7 +20,18 @@ builder.Services.AddScoped<IMentorService, MentorService>();
 builder.Services.AddScoped<ILearningTaskService, LearningTaskService>();
 builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
 builder.Services.AddScoped<ISubmissionService, SubmissionService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails(); 
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options => 
+    {
+        // Suppresses detailed JSON text parsing errors from being exposed to clients
+        options.AllowInputFormatterExceptionMessages = false; 
+    });
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
 
@@ -82,6 +93,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseExceptionHandler(); 
+
 app.UseAuthentication();
 app.UseAuthorization();
 

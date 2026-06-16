@@ -33,7 +33,14 @@ public class GlobalEnums
 
     public enum SubmissionStatus
     {
-        Submitted ,
+        Submitted,
         Resubmitted
+    }
+
+    public enum ReviewStatus
+    {
+        Accepted,
+        ChangesRequired,
+        Rejected
     }
 }

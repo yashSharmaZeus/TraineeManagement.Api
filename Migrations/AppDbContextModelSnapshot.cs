@@ -89,6 +89,127 @@ namespace TraineeManagement.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ReviewStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("varchar");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReviewStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Status = "Accepted",
+                            StatusId = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Status = "ChangesRequired",
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Status = "Rejected",
+                            StatusId = 2
+                        });
+                });
+
+            modelBuilder.Entity("SubmissionStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SubmissionStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Status = "Submitted",
+                            StatusId = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Status = "Resubmitted",
+                            StatusId = 1
+                        });
+                });
+
+            modelBuilder.Entity("TaskAssignmentStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskAssignmentStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Status = "Assigned",
+                            StatusId = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Status = "InProgress",
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Status = "Submitted",
+                            StatusId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Status = "Reviewed",
+                            StatusId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Status = "Completed",
+                            StatusId = 4
+                        });
+                });
+
             modelBuilder.Entity("TraineeManagement.Api.Models.LearningTask", b =>
                 {
                     b.Property<int>("Id")
@@ -161,6 +282,41 @@ namespace TraineeManagement.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Mentors");
+                });
+
+            modelBuilder.Entity("TraineeManagement.Api.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Feedback")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("MentorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReviewStatus")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<DateTime>("ReviewedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubmissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MentorId");
+
+                    b.HasIndex("SubmissionId");
+
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("TraineeManagement.Api.Models.Submission", b =>
@@ -301,6 +457,18 @@ namespace TraineeManagement.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2026, 6, 16, 7, 6, 34, 0, DateTimeKind.Unspecified),
+                            Email = "Admin@gmail.com",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKZbq3NQIBWQ2/R+xBuFq1yCCAZ2bfdBV/hwvTtkDT2nT/6EblN6/I/98TZCSNlVMQ==",
+                            Role = "Admin",
+                            UpdateDate = new DateTime(2026, 6, 16, 7, 6, 34, 0, DateTimeKind.Unspecified),
+                            Username = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("TraineeStatus", b =>
@@ -339,6 +507,25 @@ namespace TraineeManagement.Api.Migrations
                             Status = "Completed",
                             StatusId = 2
                         });
+                });
+
+            modelBuilder.Entity("TraineeManagement.Api.Models.Review", b =>
+                {
+                    b.HasOne("TraineeManagement.Api.Models.Mentor", "Mentor")
+                        .WithMany()
+                        .HasForeignKey("MentorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TraineeManagement.Api.Models.Submission", "Submission")
+                        .WithMany()
+                        .HasForeignKey("SubmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mentor");
+
+                    b.Navigation("Submission");
                 });
 
             modelBuilder.Entity("TraineeManagement.Api.Models.Submission", b =>
