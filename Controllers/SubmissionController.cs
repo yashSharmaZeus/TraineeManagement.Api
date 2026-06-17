@@ -7,7 +7,6 @@ namespace TraineeManagement.Api.Controllers;
 
 [ApiController]
 [Route("/api/submissions")]
-[Authorize]
 public class SubmissionController : ControllerBase
 {
     private readonly ISubmissionService _submissionControllerService;
@@ -18,6 +17,15 @@ public class SubmissionController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Retrieve all Submission.
+    /// </summary>
+    /// <remarks>
+    /// Authorization required
+    /// </remarks>
+    /// <response code="200">Retrieve all Submission.</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -25,6 +33,18 @@ public class SubmissionController : ControllerBase
         return Ok(responses);
     }
 
+
+    /// <summary>
+    /// Retrieve Submission with matching SubmissionId.
+    /// </summary>
+    /// <remarks>   ]
+    ///  Authorization required
+    /// </remarks>
+    ///
+    /// <param name="id">Submission Id</param>
+    /// <response code="200">Retrieve assigned task with matching SubmissionId.</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -36,6 +56,19 @@ public class SubmissionController : ControllerBase
         }
         return Ok(response);
     }
+
+
+    /// <summary>
+    /// Create new Submission
+    /// </summary>
+    /// <remarks>
+    /// Authorization required
+    /// </remarks>
+    ///
+    /// <param name="request">SubmissionId, SubmissionUrl, Notes, SubmittedDate, Status (Allowed value: Submitted, Resubmitted)</param>
+    /// <response code="200">Create new Submission and return it</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> AddNew(CreateSubmissionRequest request)
     {

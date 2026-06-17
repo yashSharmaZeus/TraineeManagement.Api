@@ -31,7 +31,7 @@ public class SubmissionService : ISubmissionService
     public async Task<SubmissionResponse> AddNew(CreateSubmissionRequest request)
     {
         bool taskAssignmentExists = await _context.TaskAssignment.AnyAsync(t => t.Id == request.TaskAssignmentId);
-        if (!taskAssignmentExists)throw new NotFoundException($"submission with submission: {request.TaskAssignmentId} does not exists");
+        if (!taskAssignmentExists) throw new NotFoundException($"submission with submission: {request.TaskAssignmentId} does not exists");
         Submission taskAssignment = new Submission(request);
 
         await _context.Submission.AddAsync(taskAssignment);

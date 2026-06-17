@@ -6,7 +6,8 @@ public class GlobalExceptionHandler : IExceptionHandler
 {
     private readonly ILogger<GlobalExceptionHandler> _logger;
 
-    public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) {
+    public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+    {
         _logger = logger;
     }
 
@@ -15,12 +16,12 @@ public class GlobalExceptionHandler : IExceptionHandler
         Exception exception,
         CancellationToken cancellationToken)
     {
-        // _logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
 
         var (statusCode, title) = exception switch
         {
             NotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
             BadRequestException => (StatusCodes.Status400BadRequest, "Bad Request"),
+            InvalidCredential => (StatusCodes.Status401Unauthorized, "Invalid Credentials"),
             _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
         };
 

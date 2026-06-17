@@ -17,7 +17,7 @@ public class LearningTaskService : ILearningTaskService
 
     public async Task<PagedResponse<LearningTaskResponse>> GetAll(string? search, int pageNumber = 1, int pageSize = 10, string? status = null)
     {
-        
+
         IQueryable<LearningTask> query = _context.LearningTask;
         if (!string.IsNullOrWhiteSpace(search))
         {

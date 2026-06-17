@@ -23,5 +23,5 @@ public class CreateMentorRequest
     public string Expertise { get; set; } = null!;
 
     [Required(ErrorMessage = StringConstant.STATUS_REQUIRED)]
-    public GlobalEnums.MentorStatus Status { get; set; } 
+    public GlobalEnums.MentorStatus Status { get; set; }
 }

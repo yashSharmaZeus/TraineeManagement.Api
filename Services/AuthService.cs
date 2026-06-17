@@ -21,7 +21,7 @@ public class AuthService : IAuthService
     {
         string Username = request.Username;
         string Password = request.Password;
-        Console.WriteLine(ComputePasswordHash(Username,Password));
+        Console.WriteLine(ComputePasswordHash(Username, Password));
         User? dbUser = await _context.User.FirstOrDefaultAsync(u => u.Username == Username);
         if (dbUser == null)
         {
@@ -33,8 +33,8 @@ public class AuthService : IAuthService
             return null;
         }
 
-        string JwtToken = _jwtService.GenerateToken(dbUser.Id, dbUser.Username,dbUser.Role);
-        int expires = Convert.ToInt32(60*60);
+        string JwtToken = _jwtService.GenerateToken(dbUser.Id, dbUser.Username, dbUser.Role);
+        int expires = Convert.ToInt32(60 * 60);
         UserResponse user = new UserResponse
         {
             Id = dbUser.Id,
@@ -63,7 +63,7 @@ public class AuthService : IAuthService
     {
         var passwordHasher = new PasswordHasher<string>();
         PasswordVerificationResult result = passwordHasher.VerifyHashedPassword(User, storedHash, Password);
-        
+
         switch (result)
         {
             case PasswordVerificationResult.Success:

@@ -7,5 +7,5 @@ using TraineeManagement.Api.Enums;
 public class UpdateTaskAssignmentRequest
 {
     [Required(ErrorMessage = StringConstant.STATUS_REQUIRED)]
-    public GlobalEnums.TaskAssignmentStatus Status {get;set;}
+    public GlobalEnums.TaskAssignmentStatus Status { get; set; }
 }

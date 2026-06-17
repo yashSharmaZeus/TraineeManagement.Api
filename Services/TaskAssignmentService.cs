@@ -31,7 +31,7 @@ public class TaskAssignmentService : ITaskAssignmentService
     public async Task<TaskAssignmentResponse> AddNew(CreateTaskAssignmentRequest request)
     {
         bool TraineeExists = await _context.Trainees.AnyAsync(t => t.Id == request.TraineeId);
-        if (!TraineeExists)throw new NotFoundException($"Trainee with TraineeId: {request.TraineeId} does not exists");
+        if (!TraineeExists) throw new NotFoundException($"Trainee with TraineeId: {request.TraineeId} does not exists");
         bool MentorExists = await _context.Trainees.AnyAsync(t => t.Id == request.MentorId);
         if (!MentorExists) throw new NotFoundException($"Mentor with MentorId: {request.MentorId} does not exists");
         bool LearningTaskExists = await _context.Trainees.AnyAsync(t => t.Id == request.LearningTaskId);

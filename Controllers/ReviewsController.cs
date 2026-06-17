@@ -7,7 +7,6 @@ namespace TraineeManagement.Api.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
-[Authorize]
 public class ReviewsController : ControllerBase
 {
     private readonly IReviewService _ReviewsControllerService;
@@ -18,6 +17,15 @@ public class ReviewsController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Retrieve all Review.
+    /// </summary>
+    /// <remarks>
+    /// Authorization required
+    /// </remarks>
+    /// <response code="200">Retrieve all Review.</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -25,6 +33,17 @@ public class ReviewsController : ControllerBase
         return Ok(responses);
     }
 
+    /// <summary>
+    /// Retrieve Review with matching ReviewId.
+    /// </summary>
+    /// <remarks> 
+    ///  Authorization required
+    /// </remarks>
+    ///
+    /// <param name="id">Review Id</param>
+    /// <response code="200">Retrieve assigned task with matching ReviewId.</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -36,6 +55,18 @@ public class ReviewsController : ControllerBase
         }
         return Ok(response);
     }
+
+    /// <summary>
+    /// Create new Review
+    /// </summary>
+    /// <remarks>
+    /// Authorization required
+    /// </remarks>
+    ///
+    /// <param name="request">ReviewId, ReviewUrl, Notes, SubmittedDate, ReviewStatus (Allowed value: Accepted, ChangesRequired, Rejected)</param>
+    /// <response code="200">Create new Review and return it</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> AddNew(CreateReviewRequest request)
     {
@@ -43,5 +74,4 @@ public class ReviewsController : ControllerBase
         _logger.LogInformation("Review created successfully. TraineeId: {TraineeId}", response.Id);
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
-
 }

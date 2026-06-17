@@ -13,6 +13,7 @@ public class Review
     [Required]
     public int SubmissionId { get; set; }
     public Submission Submission { get; set; } = null!;
+   
     [Required]
     public int MentorId { get; set; }
     public Mentor Mentor { get; set; } = null!;

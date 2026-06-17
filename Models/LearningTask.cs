@@ -10,7 +10,7 @@ public class LearningTask
 {
     public int Id { get; set; }
 
-    [Required]  
+    [Required]
     [Column(TypeName = "varchar(50)")]
     public string Title { get; set; } = null!;
 
@@ -24,17 +24,17 @@ public class LearningTask
 
     [Required]
     [Column(TypeName = "varchar(50)")]
-    public DateTime DueDate { get; set; } 
+    public DateTime DueDate { get; set; }
 
     [Required]
     [Column(TypeName = "varchar(50)")]
-    public GlobalEnums.LearningTaskStatus Status { get; set; } 
+    public GlobalEnums.LearningTaskStatus Status { get; set; }
 
     [Required]
-    public DateTime CreatedDate { get; set; } 
+    public DateTime CreatedDate { get; set; }
 
     [Required]
-    public DateTime UpdatedDate { get; set; } 
+    public DateTime UpdatedDate { get; set; }
 
     public LearningTask(CreateLearningTaskRequest request)
     {
@@ -47,5 +47,5 @@ public class LearningTask
         UpdatedDate = DateHelper.Now();
     }
 
-    private LearningTask(){}
+    private LearningTask() { }
 }

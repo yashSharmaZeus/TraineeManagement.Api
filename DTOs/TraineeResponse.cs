@@ -10,13 +10,13 @@ public class TraineeResponse
     public int Id { get; set; }
 
     [Required(ErrorMessage = StringConstant.FIRST_NAME_REQUIRED)]
-    public string FirstName { get; set; } 
+    public string FirstName { get; set; }
 
     [Required(ErrorMessage = StringConstant.LAST_NAME_REQUIRED)]
-    public string LastName { get; set; } 
+    public string LastName { get; set; }
 
     [Required(ErrorMessage = StringConstant.EMAIL_REQUIRED)]
-    public string Email { get; set; } 
+    public string Email { get; set; }
 
     [Required(ErrorMessage = StringConstant.TECH_STACK_REQUIRED)]
     public string TechStack { get; set; }
@@ -30,7 +30,7 @@ public class TraineeResponse
 
     public TraineeResponse(Trainee trainee)
     {
-        Id = trainee.Id ;
+        Id = trainee.Id;
         FirstName = trainee.FirstName;
         LastName = trainee.LastName;
         Email = trainee.Email;

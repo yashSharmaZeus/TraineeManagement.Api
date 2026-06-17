@@ -10,13 +10,13 @@ public class LearningTaskResponse
     public int Id { get; set; }
 
     [Required(ErrorMessage = StringConstant.TITLE_REQUIRED)]
-    public string Title { get; set; } 
+    public string Title { get; set; }
 
     [Required(ErrorMessage = StringConstant.DESCRIPTION_REQUIRED)]
-    public string Description { get; set; } 
+    public string Description { get; set; }
 
     [Required(ErrorMessage = StringConstant.EXPECTED_TECH_STACK_REQUIRED)]
-    public string ExpectedTechStack { get; set; } 
+    public string ExpectedTechStack { get; set; }
 
     [Required(ErrorMessage = StringConstant.TECH_STACK_REQUIRED)]
     public DateTime DueDate { get; set; }

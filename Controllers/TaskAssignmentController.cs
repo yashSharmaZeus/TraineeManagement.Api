@@ -7,7 +7,6 @@ namespace TraineeManagement.Api.Controllers;
 
 [ApiController]
 [Route("/api/task-assignments")]
-[Authorize]
 public class TaskAssignmentController : ControllerBase
 {
     private readonly ITaskAssignmentService _iTaskAssignmentService;
@@ -17,6 +16,16 @@ public class TaskAssignmentController : ControllerBase
         _iTaskAssignmentService = iTaskAssignmentService;
         _logger = logger;
     }
+
+    /// <summary>
+    /// Retrieve all assigned task.
+    /// </summary>
+    /// <remarks>
+    /// Authorization required
+    /// </remarks>
+    /// <response code="200">Retrieve all assigned task.</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -24,6 +33,17 @@ public class TaskAssignmentController : ControllerBase
         return Ok(responses);
     }
 
+    /// <summary>
+    /// Retrieve assigned task with matching TaskAssignmentId.
+    /// </summary>
+    /// <remarks>   ]
+    ///  Authorization required
+    /// </remarks>
+    ///
+    /// <param name="id">TaskAssignment Id</param>
+    /// <response code="200">Retrieve assigned task with matching TaskAssignmentId.</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -36,6 +56,17 @@ public class TaskAssignmentController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Create new TaskAssignment
+    /// </summary>
+    /// <remarks>
+    /// Authorization required
+    /// </remarks>
+    ///
+    /// <param name="request">TraineeId, MentorId, LearningTaskId, AssignedDate, DueDate, Status (allowed Value:  Assigned, InProgress, Submitted, Reviewed, Completed), Remarks</param>
+    /// <response code="200">Create new TaskAssignment and return it</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> AddNew(CreateTaskAssignmentRequest request)
     {
@@ -44,16 +75,28 @@ public class TaskAssignmentController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
+    /// <summary>
+    /// Create new TaskAssignment
+    /// </summary>
+    /// <remarks>
+    /// Authorization required
+    /// </remarks>
+    ///
+    /// <param name="id">TaskAssignment Id</param>
+    /// <param name="request">Status(allowed Value:  Assigned, InProgress, Submitted, Reviewed, Completed)</param>
+    /// <response code="200">Create new TaskAssignment and return it</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
     [HttpPut("{id:int}/status")]
-    public async Task<IActionResult> UpdateTrainee(int id, UpdateTaskAssignmentRequest request)
+    public async Task<IActionResult> UpdateTaskAssignment(int id, UpdateTaskAssignmentRequest request)
     {
         TaskAssignmentResponse? response = await _iTaskAssignmentService.Update(id, request);
         if (response == null)
         {
-            _logger.LogInformation("Trainee with ID {id} not found", id);
-            return NotFound(new { message = $"Trainee with ID {id} not found" });
+            _logger.LogInformation("Task Assignment with ID {id} not found", id);
+            return NotFound(new { message = $"Task Assignment with ID {id} not found" });
         }
-        _logger.LogInformation("Trainee updated successfully. TraineeId: {TraineeId}", id);
+        _logger.LogInformation("Task Assignment updated successfully. TaskAssignmentID: {TaskAssignmentID}", id);
         return Ok(response);
     }
 }

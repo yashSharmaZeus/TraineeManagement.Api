@@ -8,7 +8,6 @@ public class SubmissionResponse
     public int Id { get; set; }
 
     public int TaskAssignmentId { get; set; }
-    public TaskAssignment TaskAssignment { get; set; } = null!;
 
     public string SubmissionUrl { get; set; } = null!;
 

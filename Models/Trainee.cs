@@ -10,7 +10,7 @@ public class Trainee
 {
     public int Id { get; set; }
 
-    [Required]  
+    [Required]
     [Column(TypeName = "varchar(50)")]
     public string FirstName { get; set; } = null!;
 
@@ -47,5 +47,5 @@ public class Trainee
         UpdatedDate = DateHelper.Now();
     }
 
-    private Trainee(){}
+    private Trainee() { }
 }

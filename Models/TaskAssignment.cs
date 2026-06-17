@@ -11,7 +11,9 @@ public class TaskAssignment
     public int Id { get; set; }
 
     [Required]
+    [ForeignKey("TraineeId")] // 
     public int TraineeId { get; set; }
+
     public Trainee Trainee { get; set; } = null!;
 
     [Required]
@@ -46,5 +48,5 @@ public class TaskAssignment
         Remarks = request.Remarks;
     }
 
-    private TaskAssignment(){}
+    private TaskAssignment() { }
 }

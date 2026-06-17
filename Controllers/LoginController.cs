@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TraineeManagement.Api.Constants;
 using TraineeManagement.Api.DTO;
 using TraineeManagement.Api.Services;
+using TraineeManagement.Api.Exceptions;
 
 namespace TraineeManagement.Api.Controllers;
 
@@ -23,11 +24,11 @@ public class LoginController : ControllerBase
         LoginResponse? response = await _iAuthServices.Login(loginRequest);
         if (response == null)
         {
-            _logger.LogInformation("User login failed for Username: {Username},  Reason: Invalid username or password",loginRequest.Username);
-            return Unauthorized(StringConstant.INVALID_USERNAME_PASSWORD);
+            _logger.LogInformation("User login failed for Username: {Username},  Reason: Invalid username or password", loginRequest.Username);
+            throw new InvalidCredential(StringConstant.INVALID_USERNAME_PASSWORD);
         }
 
-        _logger.LogInformation("User login successful for Username: {Username}",response.User.Username);
+        _logger.LogInformation("User login successful for Username: {Username}", response.User.Username);
         return Ok(response);
     }
 }

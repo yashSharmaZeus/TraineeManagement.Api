@@ -6,8 +6,8 @@ namespace TraineeManagement.Api.DTO;
 
 public class UpdateLearningTaskRequest
 {
-    
-    [Required(ErrorMessage =StringConstant.TITLE_REQUIRED)]
+
+    [Required(ErrorMessage = StringConstant.TITLE_REQUIRED)]
     [MaxLength(50, ErrorMessage = StringConstant.TITLE_MAX_CHARACTER)]
     public string Title { get; set; } = null!;
 
@@ -18,9 +18,9 @@ public class UpdateLearningTaskRequest
     [Required(ErrorMessage = StringConstant.EXPECTED_TECH_STACK_REQUIRED)]
     public string ExpectedTechStack { get; set; } = null!;
 
-    [Required(ErrorMessage =  StringConstant.DUE_DATE_REQUIRED)]
-    public DateTime DueDate { get; set; } 
+    [Required(ErrorMessage = StringConstant.DUE_DATE_REQUIRED)]
+    public DateTime DueDate { get; set; }
 
-    [Required(ErrorMessage =  StringConstant.STATUS_REQUIRED)]
+    [Required(ErrorMessage = StringConstant.STATUS_REQUIRED)]
     public GlobalEnums.LearningTaskStatus Status { get; set; }
 }

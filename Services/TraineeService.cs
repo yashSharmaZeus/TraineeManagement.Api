@@ -13,10 +13,10 @@ public class TraineeService : ITraineeService
     {
         _context = context;
     }
-    
-    public async Task<PagedResponse<TraineeResponse>> GetAll(string? search = null,int pageNumber = 1,int pageSize = 10, string? status = null)
+
+    public async Task<PagedResponse<TraineeResponse>> GetAll(string? search = null, int pageNumber = 1, int pageSize = 10, string? status = null)
     {
-        IQueryable<Trainee> query = _context.Trainees; 
+        IQueryable<Trainee> query = _context.Trainees;
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -26,7 +26,7 @@ public class TraineeService : ITraineeService
                 t.LastName.ToLower().Contains(term) ||
                 t.Email.ToLower().Contains(term) ||
                 t.TechStack.ToLower().Contains(term)
-            );  
+            );
         }
 
         if (!string.IsNullOrWhiteSpace(status))
@@ -35,10 +35,10 @@ public class TraineeService : ITraineeService
             query = query.Where(t => t.Status.ToString() == term);
         }
 
-        query =  query.Skip((pageNumber -1)*pageSize).Take(pageSize);
+        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         int TotalCount = await query.CountAsync();
         List<TraineeResponse> trainees = await query.Select(t => new TraineeResponse(t)).ToListAsync();
-        return new PagedResponse<TraineeResponse>(trainees, TotalCount ,pageNumber , pageSize);
+        return new PagedResponse<TraineeResponse>(trainees, TotalCount, pageNumber, pageSize);
     }
 
     public async Task<TraineeResponse?> GetById(int id)
@@ -67,16 +67,16 @@ public class TraineeService : ITraineeService
         trainee.Status = request.Status;
         trainee.UpdatedDate = DateHelper.Now();
         await _context.SaveChangesAsync();
-        
+
         return await GetById(id);
     }
 
     public async Task<bool> DeleteTrainee(int id)
     {
         Trainee? trainee = await _context.Trainees.FindAsync(id);
-        
+
         if (trainee == null) return false;
-        
+
         _context.Trainees.Remove(trainee);
         await _context.SaveChangesAsync();
 

@@ -5,11 +5,11 @@ namespace TraineeManagement.Api.DTO;
 public class LoginResponse
 {
     [Required]
-    public string JWTTokenValue {get;set;} = null!;
+    public string JWTTokenValue { get; set; } = null!;
 
     [Required]
-    public int ExpiresIn {get;set;} 
+    public int ExpiresIn { get; set; }
 
     [Required]
-    public UserResponse User {get;set;} = null!;
+    public UserResponse User { get; set; } = null!;
 }

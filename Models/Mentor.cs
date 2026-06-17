@@ -32,10 +32,10 @@ public class Mentor
     public GlobalEnums.MentorStatus Status { get; set; }
 
     [Required]
-    public DateTime CreatedDate { get; set; } 
+    public DateTime CreatedDate { get; set; }
 
     [Required]
-    public DateTime UpdatedDate { get; set; } 
+    public DateTime UpdatedDate { get; set; }
 
     public Mentor(CreateMentorRequest request)
     {
@@ -48,5 +48,5 @@ public class Mentor
         UpdatedDate = DateHelper.Now();
     }
 
-    private Mentor(){}
+    private Mentor() { }
 }

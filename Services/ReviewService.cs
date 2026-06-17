@@ -31,10 +31,10 @@ public class ReviewService : IReviewService
     public async Task<ReviewResponse> AddNew(CreateReviewRequest request)
     {
         bool SubmissionIdExists = await _context.Submission.AnyAsync(t => t.Id == request.SubmissionId);
-        if (!SubmissionIdExists)throw new NotFoundException($"submission with submission Id: {request.SubmissionId} does not exists");
+        if (!SubmissionIdExists) throw new NotFoundException($"submission with submission Id: {request.SubmissionId} does not exists");
         bool MentorIdExists = await _context.Mentors.AnyAsync(t => t.Id == request.MentorId);
-        if (!MentorIdExists)throw new NotFoundException($"Mentor with Mentor Id: {request.MentorId} does not exists");
-        
+        if (!MentorIdExists) throw new NotFoundException($"Mentor with Mentor Id: {request.MentorId} does not exists");
+
         Review SubmissionId = new Review(request);
 
         await _context.Review.AddAsync(SubmissionId);
