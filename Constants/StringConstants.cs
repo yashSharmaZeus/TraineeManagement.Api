@@ -33,8 +33,9 @@ public class StringConstant
     public const string STATUS_ASSIGNED  = "Assigned";
     public const string STATUS_IN_PROGRESS  = "InProgress";
     public const string STATUS_REVIEWED  = "Reviewed";
-    public const string STATUS_CHANGES_REQUIRED  = "Status Changes Required";
-    public const string STATUS_REJECTED  = "Status Rejected";
+    public const string STATUS_CHANGES_REQUIRED  = "Changes Required";
+    public const string STATUS_REJECTED  = "Rejected";
+    public const string STATUS_ACCEPTED  = "Accepted";
                 
     public const string ROLE_ADMIN = "Admin";
     public const string ROLE_MENTOR = "Mentor";

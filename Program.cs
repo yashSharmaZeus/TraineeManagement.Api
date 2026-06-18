@@ -5,14 +5,9 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -26,19 +21,27 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails(); 
-
-builder.Services.AddControllers()
-    .AddJsonOptions(options => 
-    {
-        // Suppresses detailed JSON text parsing errors from being exposed to clients
-        options.AllowInputFormatterExceptionMessages = false; 
-    });
+builder.Services.AddProblemDetails();
 
 builder.Services.AddSwaggerGen(options =>
 {
     var xmlFilename = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
 });
 
 
@@ -59,7 +62,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(secretKey)
         };
     });
-    
+builder.Services.AddScoped<JwtService>();
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
@@ -74,11 +78,11 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers().AddJsonOptions(options =>
     {
+        options.AllowInputFormatterExceptionMessages = false;
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 );
 
-builder.Services.AddScoped<JwtService>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
 ?? throw new InvalidOperationException("connection String: 'Default connections not found'");
@@ -93,18 +97,17 @@ builder.Logging.AddLog4Net("log4net.config");
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.UseSwaggerUi(options =>
-   {
-       options.DocumentPath = "/openapi/v1.json";
-   });
+    app.UseSwagger(); 
+    app.UseSwaggerUI(); 
 }
+
 
 app.UseHttpsRedirection();
 app.UseExceptionHandler(); 
+
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();

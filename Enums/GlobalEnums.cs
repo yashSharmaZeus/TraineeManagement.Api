@@ -4,43 +4,43 @@ public class GlobalEnums
 {
     public enum TraineeStatus
     {
-        Active,
-        Inactive,
-        Completed
+        Active = 0,
+        Inactive = 1,
+        Completed = 2
     }
 
     public enum MentorStatus
     {
-        Active,
-        Inactive,
+        Active = 0,
+        Inactive = 1,
     }
 
     public enum LearningTaskStatus
     {
-        Draft,
-        Published,
-        Closed
+        Draft = 0,
+        Published = 1,
+        Closed = 2
     }
 
     public enum TaskAssignmentStatus
     {
-        Assigned,
-        InProgress,
-        Submitted,
-        Reviewed,
-        Completed,
+        Assigned = 0,
+        InProgress = 1,
+        Submitted = 2,
+        Reviewed = 3,
+        Completed = 4,
     }
 
     public enum SubmissionStatus
     {
-        Submitted,
-        Resubmitted
+        Submitted = 0,
+        Resubmitted = 1
     }
 
     public enum ReviewStatus
     {
-        Accepted,
-        ChangesRequired,
-        Rejected
+        Accepted = 0,
+        ChangesRequired = 1,
+        Rejected = 2
     }
 }
