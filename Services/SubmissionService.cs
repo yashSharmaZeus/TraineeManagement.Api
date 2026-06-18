@@ -10,9 +10,11 @@ namespace TraineeManagement.Api.Services;
 public class SubmissionService : ISubmissionService
 {
     private readonly AppDbContext _context;
-    public SubmissionService(AppDbContext context)
+    private readonly ILogger<SubmissionService> _logger;
+    public SubmissionService(AppDbContext context, ILogger<SubmissionService> logger)
     {
         _context = context;
+        _logger = logger;
     }
     public async Task<List<SubmissionResponse>> GetAll()
     {
@@ -21,22 +23,29 @@ public class SubmissionService : ISubmissionService
 
         return submissions;
     }
-    public async Task<SubmissionResponse?> GetById(int id)
+    public async Task<SubmissionResponse> GetById(int id)
     {
         Submission? submission = await _context.Submission.FindAsync(id);
-        if (submission == null) return null;
+        if (submission == null)
+        {
+            _logger.LogInformation("submission with ID {id} not found", id);
+            throw new NotFoundException($"submission with ID {id} not found");
+        }
         return new SubmissionResponse(submission);
     }
 
     public async Task<SubmissionResponse> AddNew(CreateSubmissionRequest request)
     {
         bool taskAssignmentExists = await _context.TaskAssignment.AnyAsync(t => t.Id == request.TaskAssignmentId);
-        if (!taskAssignmentExists) throw new NotFoundException($"submission with submission: {request.TaskAssignmentId} does not exists");
+        if (!taskAssignmentExists)
+        {
+            _logger.LogInformation("submission with submission Id: {Id} does not exists",request.TaskAssignmentId);
+            throw new NotFoundException($"submission with submission Id: {request.TaskAssignmentId} does not exists");
+        }
         Submission taskAssignment = new Submission(request);
 
         await _context.Submission.AddAsync(taskAssignment);
         await _context.SaveChangesAsync();
-
         SubmissionResponse response = new SubmissionResponse(taskAssignment);
         return response;
     }

@@ -9,10 +9,12 @@ namespace TraineeManagement.Api.Services;
 public class MentorService : IMentorService
 {
     private readonly AppDbContext _context;
+    private readonly ILogger<MentorService> _logger;
 
-    public MentorService(AppDbContext context)
+    public MentorService(AppDbContext context, ILogger<MentorService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<PagedResponse<MentorResponse>> GetAll(string? search, int pageNumber = 1, int pageSize = 10, string? status = null)
@@ -43,10 +45,14 @@ public class MentorService : IMentorService
         return new PagedResponse<MentorResponse>(mentors, TotalCount, pageNumber, pageSize);
     }
 
-    public async Task<MentorResponse?> GetById(int id)
+    public async Task<MentorResponse> GetById(int id)
     {
         Mentor? mentor = await _context.Mentors.FindAsync(id);
-        if (mentor == null) return null;
+        if (mentor == null)
+        {
+            _logger.LogInformation("Mentor with Id: {id} not found",id);
+            throw new NotFiniteNumberException($"Mentor with Id: {id} not found");
+        }
         return new MentorResponse(mentor);
     }
 
@@ -58,10 +64,14 @@ public class MentorService : IMentorService
         return new MentorResponse(mentor);
     }
 
-    public async Task<MentorResponse?> UpdateMentor(int id, UpdateMentorRequest request)
+    public async Task<MentorResponse> UpdateMentor(int id, UpdateMentorRequest request)
     {
         Mentor? mentor = await _context.Mentors.FindAsync(id);
-        if (mentor == null) return null;
+        if (mentor == null)
+        {
+            _logger.LogInformation("Mentor with Id: {id} not found",id);
+            throw new NotFiniteNumberException($"Mentor with Id: {id} not found");
+        }
         mentor.FirstName = request.FirstName;
         mentor.LastName = request.LastName;
         mentor.Email = request.Email;

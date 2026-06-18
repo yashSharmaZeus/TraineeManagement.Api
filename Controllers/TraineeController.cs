@@ -52,11 +52,6 @@ public class TraineesController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         TraineeResponse? response = await _iTraineeServices.GetById(id);
-        if (response == null)
-        {
-            _logger.LogInformation("Trainee with ID {id} not found", id);
-            return NotFound(new { message = $"Trainee with ID {id} not found" });
-        }
         return Ok(response);
     }
 
@@ -98,12 +93,7 @@ public class TraineesController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateTrainee(int id, UpdateTraineeRequest request)
     {
-        TraineeResponse? response = await _iTraineeServices.UpdateTrainee(id, request);
-        if (response == null)
-        {
-            _logger.LogInformation("Trainee with ID {id} not found", id);
-            return NotFound(new { message = $"Trainee with ID {id} not found" });
-        }
+        TraineeResponse response = await _iTraineeServices.UpdateTrainee(id, request);
         _logger.LogInformation("Trainee updated successfully. TraineeId: {TraineeId}", id);
         return Ok(response);
     }
@@ -117,7 +107,7 @@ public class TraineesController : ControllerBase
     /// </remarks>
     ///
     /// <param name="id">Trainee Id</param>
-    /// <response code="200">Deletes trainee.</response>
+    /// <response code="204">Deletes trainee.</response>
     /// <response code="401">If the user is not authenticated.</response>
     /// <response code="403">If the user does not have the Admin role.</response>
 

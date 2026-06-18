@@ -110,7 +110,7 @@ public class LearningTasksController : ControllerBase
     /// </remarks>
     ///
     /// <param name="id">learningTask Id</param>
-    /// <response code="200">Deletes learningTask.</response>
+    /// <response code="204">Deletes learningTask.</response>
     /// <response code="401">If the user is not authenticated.</response>
     /// <response code="403">If the user does not have the Admin role.</response>
     [Authorize]

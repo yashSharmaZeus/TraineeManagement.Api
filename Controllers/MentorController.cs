@@ -97,12 +97,7 @@ public class MentorsController : ControllerBase
     [Authorize(Roles = "Admin,Mentor")]
     public async Task<IActionResult> UpdateMentor(int id, UpdateMentorRequest request)
     {
-        MentorResponse? response = await _iMentorService.UpdateMentor(id, request);
-        if (response == null)
-        {
-            _logger.LogInformation("Mentor with ID {id} not found", id);
-            return NotFound(new { message = $"Mentor with ID {id} not found" });
-        }
+        MentorResponse response = await _iMentorService.UpdateMentor(id, request);
         _logger.LogInformation("Mentor updated successfully. MentorId: {MentorId}", id);
         return Ok(response);
     }
@@ -115,7 +110,7 @@ public class MentorsController : ControllerBase
     /// </remarks>
     ///
     /// <param name="id">Mentor Id</param>
-    /// <response code="200">Deletes Mentor.</response>
+    /// <response code="204">Deletes Mentor.</response>
     /// <response code="401">If the user is not authenticated.</response>
     /// <response code="403">If the user does not have the Admin role.</response>
     [HttpDelete("{id:int}")]

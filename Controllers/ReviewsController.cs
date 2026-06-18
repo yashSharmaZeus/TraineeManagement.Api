@@ -47,12 +47,7 @@ public class ReviewsController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        ReviewResponse? response = await _ReviewsControllerService.GetById(id);
-        if (response == null)
-        {
-            _logger.LogInformation("Review with ID {id} not found", id);
-            return NotFound(new { message = $"Review with ID {id} not found" });
-        }
+        ReviewResponse response = await _ReviewsControllerService.GetById(id);
         return Ok(response);
     }
 
@@ -71,7 +66,7 @@ public class ReviewsController : ControllerBase
     public async Task<IActionResult> AddNew(CreateReviewRequest request)
     {
         ReviewResponse response = await _ReviewsControllerService.AddNew(request);
-        _logger.LogInformation("Review created successfully. TraineeId: {TraineeId}", response.Id);
+        _logger.LogInformation("Review created successfully. ReviewId: {Id}", response.Id);
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 }

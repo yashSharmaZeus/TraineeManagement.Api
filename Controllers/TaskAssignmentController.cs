@@ -48,11 +48,6 @@ public class TaskAssignmentController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         TaskAssignmentResponse? response = await _iTaskAssignmentService.GetById(id);
-        if (response == null)
-        {
-            _logger.LogInformation("Task assignment with ID {id} not found", id);
-            return NotFound(new { message = $"Task assignment with ID {id} not found" });
-        }
         return Ok(response);
     }
 
@@ -71,7 +66,7 @@ public class TaskAssignmentController : ControllerBase
     public async Task<IActionResult> AddNew(CreateTaskAssignmentRequest request)
     {
         TaskAssignmentResponse response = await _iTaskAssignmentService.AddNew(request);
-        _logger.LogInformation("task assignment created successfully. TraineeId: {TraineeId}", response.Id);
+        _logger.LogInformation("task assignment created successfully. Id: {Id}", response.Id);
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
@@ -90,12 +85,7 @@ public class TaskAssignmentController : ControllerBase
     [HttpPut("{id:int}/status")]
     public async Task<IActionResult> UpdateTaskAssignment(int id, UpdateTaskAssignmentRequest request)
     {
-        TaskAssignmentResponse? response = await _iTaskAssignmentService.Update(id, request);
-        if (response == null)
-        {
-            _logger.LogInformation("Task Assignment with ID {id} not found", id);
-            return NotFound(new { message = $"Task Assignment with ID {id} not found" });
-        }
+        TaskAssignmentResponse response = await _iTaskAssignmentService.Update(id, request);
         _logger.LogInformation("Task Assignment updated successfully. TaskAssignmentID: {TaskAssignmentID}", id);
         return Ok(response);
     }

@@ -3,15 +3,18 @@ using TraineeManagement.Api.Data;
 using TraineeManagement.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using TraineeManagement.Api.Helpers;
+using TraineeManagement.Api.Exceptions;
 
 namespace TraineeManagement.Api.Services;
 
 public class TraineeService : ITraineeService
 {
     private readonly AppDbContext _context;
-    public TraineeService(AppDbContext context)
+    private readonly ILogger<TraineeService> _logger;
+    public TraineeService(AppDbContext context,ILogger<TraineeService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<PagedResponse<TraineeResponse>> GetAll(string? search = null, int pageNumber = 1, int pageSize = 10, string? status = null)
@@ -41,10 +44,15 @@ public class TraineeService : ITraineeService
         return new PagedResponse<TraineeResponse>(trainees, TotalCount, pageNumber, pageSize);
     }
 
-    public async Task<TraineeResponse?> GetById(int id)
+    public async Task<TraineeResponse> GetById(int id)
     {
         Trainee? trainee = await _context.Trainees.FindAsync(id);
-        if (trainee == null) return null;
+        if (trainee == null)
+        {
+            _logger.LogInformation("Trainee with trainee id: {id} not found",id);
+            throw new NotFoundException($"Trainee with trainee id: {id} not found");
+        }
+        ;
         return new TraineeResponse(trainee);
     }
 
@@ -56,10 +64,14 @@ public class TraineeService : ITraineeService
         return new TraineeResponse(trainee);
     }
 
-    public async Task<TraineeResponse?> UpdateTrainee(int id, UpdateTraineeRequest request)
+    public async Task<TraineeResponse> UpdateTrainee(int id, UpdateTraineeRequest request)
     {
         Trainee? trainee = await _context.Trainees.FindAsync(id);
-        if (trainee == null) return null;
+        if (trainee == null)
+        {
+            _logger.LogInformation("Trainee with trainee id: {id} not found",id);
+            throw new NotFoundException($"Trainee with trainee id: {id} not found");
+        }
         trainee.FirstName = request.FirstName;
         trainee.LastName = request.LastName;
         trainee.Email = request.Email;
@@ -75,7 +87,11 @@ public class TraineeService : ITraineeService
     {
         Trainee? trainee = await _context.Trainees.FindAsync(id);
 
-        if (trainee == null) return false;
+        if (trainee == null)
+        {
+            _logger.LogInformation("Trainee with trainee id: {id} not found",id);
+            throw new NotFoundException($"Trainee with trainee id: {id} not found");
+        }
 
         _context.Trainees.Remove(trainee);
         await _context.SaveChangesAsync();

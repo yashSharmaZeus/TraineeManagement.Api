@@ -49,11 +49,6 @@ public class SubmissionController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         SubmissionResponse? response = await _submissionControllerService.GetById(id);
-        if (response == null)
-        {
-            _logger.LogInformation("submission with ID {id} not found", id);
-            return NotFound(new { message = $"submission with ID {id} not found" });
-        }
         return Ok(response);
     }
 
@@ -73,7 +68,7 @@ public class SubmissionController : ControllerBase
     public async Task<IActionResult> AddNew(CreateSubmissionRequest request)
     {
         SubmissionResponse response = await _submissionControllerService.AddNew(request);
-        _logger.LogInformation("submission created successfully. TraineeId: {TraineeId}", response.Id);
+        _logger.LogInformation("submission created successfully. SubmissionId: {submissionId}", response.Id);
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 

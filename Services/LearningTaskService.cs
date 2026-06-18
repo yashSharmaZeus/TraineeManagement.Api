@@ -3,16 +3,19 @@ using TraineeManagement.Api.Data;
 using TraineeManagement.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using TraineeManagement.Api.Helpers;
+using TraineeManagement.Api.Exceptions;
 
 namespace TraineeManagement.Api.Services;
 
 public class LearningTaskService : ILearningTaskService
 {
     private readonly AppDbContext _context;
+    private readonly ILogger<LearningTaskService> _logger;
 
-    public LearningTaskService(AppDbContext context)
+    public LearningTaskService(AppDbContext context, ILogger<LearningTaskService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<PagedResponse<LearningTaskResponse>> GetAll(string? search, int pageNumber = 1, int pageSize = 10, string? status = null)
@@ -43,10 +46,14 @@ public class LearningTaskService : ILearningTaskService
         return new PagedResponse<LearningTaskResponse>(mentors, TotalCount, pageNumber, pageSize);
     }
 
-    public async Task<LearningTaskResponse?> GetById(int id)
+    public async Task<LearningTaskResponse> GetById(int id)
     {
         LearningTask? task = await _context.LearningTask.FindAsync(id);
-        if (task == null) return null;
+        if (task == null)        
+        {
+            _logger.LogInformation("Task with ID {id} not found", id);
+            throw new NotFoundException($"learningTask with Id: {id} not found");
+        }
         return new LearningTaskResponse(task);
     }
     public async Task<LearningTaskResponse> AddNew(CreateLearningTaskRequest request)
@@ -56,10 +63,14 @@ public class LearningTaskService : ILearningTaskService
         await _context.SaveChangesAsync();
         return new LearningTaskResponse(task);
     }
-    public async Task<LearningTaskResponse?> UpdateTask(int id, UpdateLearningTaskRequest request)
+    public async Task<LearningTaskResponse> UpdateTask(int id, UpdateLearningTaskRequest request)
     {
         LearningTask? task = await _context.LearningTask.FindAsync(id);
-        if (task == null) return null;
+        if (task == null)        
+        {
+            _logger.LogInformation("Task with ID {id} not found", id);
+            throw new NotFoundException($"learningTask with Id: {id} not found");
+        }
         task.Title = request.Title;
         task.Description = request.Description;
         task.ExpectedTechStack = request.ExpectedTechStack;
