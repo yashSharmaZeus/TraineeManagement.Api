@@ -70,4 +70,6 @@ public class StringConstant
 
     public const string SCORE_REQUIRED = "Score required";
     public const string REVIEWED_DATE = "Review Date required";
+
+    public const string FILE_REQUIRED = "File is required";
 }

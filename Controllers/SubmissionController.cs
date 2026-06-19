@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TraineeManagement.Api.DTO;
@@ -14,7 +15,7 @@ public class SubmissionController : ControllerBase
     public SubmissionController(ISubmissionService submissionControllerService, ILogger<SubmissionController> logger)
     {
         _submissionControllerService = submissionControllerService;
-        _logger = logger;
+        _logger = logger; 
     }
 
     /// <summary>
@@ -70,6 +71,26 @@ public class SubmissionController : ControllerBase
         SubmissionResponse response = await _submissionControllerService.AddNew(request);
         _logger.LogInformation("submission created successfully. SubmissionId: {submissionId}", response.Id);
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+    }
+
+    /// <summary>
+    /// File upload
+    /// </summary>
+    /// <remarks>
+    /// Authorization required
+    /// </remarks>
+    ///
+    /// <param name="request">File</param>
+    /// <param name="SubmissionId">Submission Id</param>
+    /// <response code="201">Successful file upload</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize]
+    [HttpPost("{SubmissionId:int}/files")]
+    public async Task<IActionResult> UploadFile(int SubmissionId,[FromForm] SubmissionFileRequest request)
+    {   
+        int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        SubmissionFileResponse response = await _submissionControllerService.UploadFile(userId,SubmissionId,request);
+        return Created($"/api/submissions/{SubmissionId}/files",response);
     }
 
 }

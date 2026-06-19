@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TraineeManagement.Api.Data;
 
@@ -10,9 +11,11 @@ using TraineeManagement.Api.Data;
 namespace TraineeManagement.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260619101214_FileSubmission3")]
+    partial class FileSubmission3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -356,9 +359,8 @@ namespace TraineeManagement.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Checksum")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("Checksum")
+                        .HasColumnType("int");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
@@ -370,7 +372,7 @@ namespace TraineeManagement.Api.Migrations
 
                     b.Property<string>("OriginalFilName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("Varchar(20)");
 
                     b.Property<long>("Size")
                         .HasColumnType("bigint");
@@ -503,11 +505,11 @@ namespace TraineeManagement.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 6, 19, 12, 1, 57, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2026, 6, 19, 10, 12, 14, 0, DateTimeKind.Unspecified),
                             Email = "Admin@gmail.com",
                             PasswordHash = "AQAAAAIAAYagAAAAEKZbq3NQIBWQ2/R+xBuFq1yCCAZ2bfdBV/hwvTtkDT2nT/6EblN6/I/98TZCSNlVMQ==",
                             Role = "Admin",
-                            UpdateDate = new DateTime(2026, 6, 19, 12, 1, 57, 0, DateTimeKind.Unspecified),
+                            UpdateDate = new DateTime(2026, 6, 19, 10, 12, 14, 0, DateTimeKind.Unspecified),
                             Username = "Admin"
                         });
                 });

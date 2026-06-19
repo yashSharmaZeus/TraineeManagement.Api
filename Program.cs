@@ -18,6 +18,7 @@ builder.Services.AddScoped<ILearningTaskService, LearningTaskService>();
 builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
 builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -99,13 +100,13 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger(); 
-    app.UseSwaggerUI(); 
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 
 app.UseHttpsRedirection();
-app.UseExceptionHandler(); 
+app.UseExceptionHandler();
 
 app.UseRouting();
 
