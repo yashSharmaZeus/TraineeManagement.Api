@@ -39,8 +39,8 @@ public class SubmissionService : ISubmissionService
         bool taskAssignmentExists = await _context.TaskAssignment.AnyAsync(t => t.Id == request.TaskAssignmentId);
         if (!taskAssignmentExists)
         {
-            _logger.LogInformation("submission with submission Id: {Id} does not exists",request.TaskAssignmentId);
-            throw new NotFoundException($"submission with submission Id: {request.TaskAssignmentId} does not exists");
+            _logger.LogInformation("Task assignment with Task assignment Id: {Id} does not exists",request.TaskAssignmentId);
+            throw new NotFoundException($"Task assignment with Task assignment Id: {request.TaskAssignmentId} does not exists");
         }
         Submission taskAssignment = new Submission(request);
 

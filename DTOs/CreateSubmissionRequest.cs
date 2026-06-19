@@ -9,7 +9,7 @@ public class CreateSubmissionRequest
     /// TaskAssignment Id of already existing taskAssignment.
     /// </summary>
     /// <example>1</example>
-    [Required(ErrorMessage = StringConstant.TRAINEE_ID_REQUIRED)]
+    [Required(ErrorMessage = StringConstant.TASK_ASSIGNMENT_ID_REQUIRED)]
     public int TaskAssignmentId { get; set; }
 
     /// <summary>

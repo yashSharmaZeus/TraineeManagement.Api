@@ -58,6 +58,7 @@ public class StringConstant
     public const string TRAINEE_ID_REQUIRED = "TraineeId is Required";
     public const string MENTOR_ID_REQUIRED = "MentorId is Required";
     public const string LEARNING_TASK_ID_REQUIRED = "LearningTaskId is Required";
+    public const string TASK_ASSIGNMENT_ID_REQUIRED = "TaskAssignmentId is Required";
     public const string ASSIGNED_DATE_REQUIRED = "Assigned Date is Required";
     public const string NOTES_REQUIRED = "Note is Required";
 
