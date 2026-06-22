@@ -11,8 +11,8 @@ using TraineeManagement.Api.Data;
 namespace TraineeManagement.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260619102518_FileSubmission4")]
-    partial class FileSubmission4
+    [Migration("20260622083402_dockernewtest")]
+    partial class dockernewtest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -373,7 +373,7 @@ namespace TraineeManagement.Api.Migrations
 
                     b.Property<string>("OriginalFilName")
                         .IsRequired()
-                        .HasColumnType("Varchar(20)");
+                        .HasColumnType("longtext");
 
                     b.Property<long>("Size")
                         .HasColumnType("bigint");
@@ -506,11 +506,11 @@ namespace TraineeManagement.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 6, 19, 10, 25, 17, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2026, 6, 22, 8, 34, 1, 0, DateTimeKind.Unspecified),
                             Email = "Admin@gmail.com",
                             PasswordHash = "AQAAAAIAAYagAAAAEKZbq3NQIBWQ2/R+xBuFq1yCCAZ2bfdBV/hwvTtkDT2nT/6EblN6/I/98TZCSNlVMQ==",
                             Role = "Admin",
-                            UpdateDate = new DateTime(2026, 6, 19, 10, 25, 17, 0, DateTimeKind.Unspecified),
+                            UpdateDate = new DateTime(2026, 6, 22, 8, 34, 1, 0, DateTimeKind.Unspecified),
                             Username = "Admin"
                         });
                 });

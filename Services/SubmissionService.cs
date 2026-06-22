@@ -11,14 +11,17 @@ namespace TraineeManagement.Api.Services;
 public class SubmissionService : ISubmissionService
 {
     private readonly AppDbContext _context;
+    private readonly ICacheService _cache;
     private readonly ILogger<SubmissionService> _logger;
     private readonly IFileStorageService _fileStorageService;
-    public SubmissionService(AppDbContext context, ILogger<SubmissionService> logger, IFileStorageService fileStorageService)
+    public SubmissionService(AppDbContext context, ILogger<SubmissionService> logger, IFileStorageService fileStorageService, ICacheService cache)
     {
         _context = context;
         _logger = logger;
         _fileStorageService = fileStorageService;
+        _cache = cache;
     }
+
     public async Task<List<SubmissionResponse>> GetAll()
     {
         IQueryable<Submission> query = _context.Submission;
@@ -28,12 +31,21 @@ public class SubmissionService : ISubmissionService
     }
     public async Task<SubmissionResponse> GetById(int id)
     {
+        string CacheKey = $"submission-summary:{id}";
+        Submission? submissionCache = await _cache.GetDataAsync<Submission>(CacheKey);
+        if (submissionCache != null)
+        {
+            return new SubmissionResponse(submissionCache);
+        }
+
         Submission? submission = await _context.Submission.FindAsync(id);
         if (submission == null)
         {
             _logger.LogInformation("submission with ID {id} not found", id);
             throw new NotFoundException($"submission with ID {id} not found");
         }
+
+        await _cache.SetDataAsync<Submission>(CacheKey, submission);
         return new SubmissionResponse(submission);
     }
 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TraineeManagement.Api.Data;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi;
@@ -19,6 +20,7 @@ builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
 builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+builder.Services.AddScoped<ICacheService, CacheService>();
 
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -45,7 +47,10 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
+builder.Services.AddAuthentication(
+        CertificateAuthenticationDefaults.AuthenticationScheme)
+    .AddCertificate();
+    
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
 
@@ -92,6 +97,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySQL(
         connectionString
     ));
+
+var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = redisConnectionString;
+    options.InstanceName = "MyApp_";
+});
+builder.Services.AddControllers();
 
 // log4net
 builder.Logging.AddLog4Net("log4net.config");

@@ -9,12 +9,15 @@ namespace TraineeManagement.Api.Services;
 public class TaskAssignmentService : ITaskAssignmentService
 {
     private readonly AppDbContext _context;
+    private readonly ICacheService _cache;
     private readonly ILogger<TaskAssignment> _logger;
-    public TaskAssignmentService(AppDbContext context, ILogger<TaskAssignment> logger)
+    public TaskAssignmentService(AppDbContext context, ILogger<TaskAssignment> logger, ICacheService cacheService)
     {
         _context = context;
         _logger = logger;
+        _cache = cacheService;
     }
+
     public async Task<List<TaskAssignmentResponse>> GetAll()
     {
         IQueryable<TaskAssignment> query = _context.TaskAssignment;
@@ -24,13 +27,20 @@ public class TaskAssignmentService : ITaskAssignmentService
     }
     public async Task<TaskAssignmentResponse> GetById(int id)
     {
+        string CacheKey = $"task-assignment:{id}";
+        TaskAssignment? taskAssignmentCache = await _cache.GetDataAsync<TaskAssignment>(CacheKey);
+        if (taskAssignmentCache != null)
+        {
+            return new TaskAssignmentResponse(taskAssignmentCache);
+        }
         TaskAssignment? taskAssignment = await _context.TaskAssignment.FindAsync(id);
         if (taskAssignment == null)
         {
             _logger.LogInformation($"Task assignment with ID {id} not found");
             throw new NotFoundException($"Task assignment with ID {id} not found");
         }
-        
+
+        await _cache.SetDataAsync<TaskAssignment>(CacheKey, taskAssignment);
         return new TaskAssignmentResponse(taskAssignment);
     }
 
@@ -39,19 +49,19 @@ public class TaskAssignmentService : ITaskAssignmentService
         bool TraineeExists = await _context.Trainees.AnyAsync(t => t.Id == request.TraineeId);
         if (!TraineeExists)
         {
-            _logger.LogInformation("Trainee with TraineeId: {id} does not exists",request.TraineeId);
+            _logger.LogInformation("Trainee with TraineeId: {id} does not exists", request.TraineeId);
             throw new NotFoundException($"Trainee with TraineeId: {request.TraineeId} does not exists");
         }
         bool MentorExists = await _context.Trainees.AnyAsync(t => t.Id == request.MentorId);
         if (!MentorExists)
         {
-            _logger.LogInformation("Mentor with MentorId: {id} does not exists",request.MentorId);
+            _logger.LogInformation("Mentor with MentorId: {id} does not exists", request.MentorId);
             throw new NotFoundException($"Mentor with MentorId: {request.MentorId} does not exists");
         }
         bool LearningTaskExists = await _context.Trainees.AnyAsync(t => t.Id == request.LearningTaskId);
         if (!LearningTaskExists)
         {
-            _logger.LogInformation("Learning task with LearningTaskId: {id} does not exists",request.LearningTaskId);
+            _logger.LogInformation("Learning task with LearningTaskId: {id} does not exists", request.LearningTaskId);
             throw new NotFoundException($"Learning task with LearningTaskId: {request.LearningTaskId} does not exists");
         }
 
@@ -67,12 +77,20 @@ public class TaskAssignmentService : ITaskAssignmentService
     public async Task<TaskAssignmentResponse> Update(int id, UpdateTaskAssignmentRequest request)
     {
         TaskAssignment? taskAssignment = await _context.TaskAssignment.FindAsync(id);
-        if(taskAssignment == null)
+        if (taskAssignment == null)
         {
-            _logger.LogInformation("Task assignment with ID {id} not found",id);
+            _logger.LogInformation("Task assignment with ID {id} not found", id);
             throw new NotFoundException($"Task assignment with ID {id} not found");
-        };
+        }
+
         taskAssignment.Status = request.Status;
+
+        string CacheKey = $"task-assignment:{id}";
+
+        if (await _cache.KeyExistsAsync(CacheKey))
+        {
+            await _cache.SetDataAsync<TaskAssignment>(CacheKey, taskAssignment);
+        }
         await _context.SaveChangesAsync();
         return await GetById(id);
     }

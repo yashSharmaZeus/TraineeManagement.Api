@@ -503,11 +503,11 @@ namespace TraineeManagement.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 6, 19, 12, 1, 57, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2026, 6, 22, 8, 34, 1, 0, DateTimeKind.Unspecified),
                             Email = "Admin@gmail.com",
                             PasswordHash = "AQAAAAIAAYagAAAAEKZbq3NQIBWQ2/R+xBuFq1yCCAZ2bfdBV/hwvTtkDT2nT/6EblN6/I/98TZCSNlVMQ==",
                             Role = "Admin",
-                            UpdateDate = new DateTime(2026, 6, 19, 12, 1, 57, 0, DateTimeKind.Unspecified),
+                            UpdateDate = new DateTime(2026, 6, 22, 8, 34, 1, 0, DateTimeKind.Unspecified),
                             Username = "Admin"
                         });
                 });

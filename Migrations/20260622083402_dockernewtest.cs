@@ -9,7 +9,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace TraineeManagement.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class databaseschemaupdate7 : Migration
+    public partial class dockernewtest : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -279,6 +279,33 @@ namespace TraineeManagement.Api.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "SubmissionFileMetaData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    SubmissionId = table.Column<int>(type: "int", nullable: false),
+                    OriginalFilName = table.Column<string>(type: "longtext", nullable: false),
+                    GeneratedStorageName = table.Column<string>(type: "Varchar(50)", nullable: false),
+                    ContentType = table.Column<string>(type: "Varchar(20)", nullable: false),
+                    Size = table.Column<long>(type: "bigint", nullable: false),
+                    Checksum = table.Column<string>(type: "longtext", nullable: false),
+                    UploadedBy = table.Column<int>(type: "int", nullable: false),
+                    Timestamps = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubmissionFileMetaData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubmissionFileMetaData_Submission_SubmissionId",
+                        column: x => x.SubmissionId,
+                        principalTable: "Submission",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "LearningTaskStatus",
                 columns: new[] { "Id", "Status", "StatusId" },
@@ -342,7 +369,7 @@ namespace TraineeManagement.Api.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "CreatedDate", "Email", "PasswordHash", "Role", "UpdateDate", "Username" },
-                values: new object[] { 1, new DateTime(2026, 6, 16, 7, 6, 34, 0, DateTimeKind.Unspecified), "Admin@gmail.com", "AQAAAAIAAYagAAAAEKZbq3NQIBWQ2/R+xBuFq1yCCAZ2bfdBV/hwvTtkDT2nT/6EblN6/I/98TZCSNlVMQ==", "Admin", new DateTime(2026, 6, 16, 7, 6, 34, 0, DateTimeKind.Unspecified), "Admin" });
+                values: new object[] { 1, new DateTime(2026, 6, 22, 8, 34, 1, 0, DateTimeKind.Unspecified), "Admin@gmail.com", "AQAAAAIAAYagAAAAEKZbq3NQIBWQ2/R+xBuFq1yCCAZ2bfdBV/hwvTtkDT2nT/6EblN6/I/98TZCSNlVMQ==", "Admin", new DateTime(2026, 6, 22, 8, 34, 1, 0, DateTimeKind.Unspecified), "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Review_MentorId",
@@ -358,6 +385,11 @@ namespace TraineeManagement.Api.Migrations
                 name: "IX_Submission_TaskAssignmentId",
                 table: "Submission",
                 column: "TaskAssignmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubmissionFileMetaData_SubmissionId",
+                table: "SubmissionFileMetaData",
+                column: "SubmissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskAssignment_LearningTaskId",
@@ -389,6 +421,9 @@ namespace TraineeManagement.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "ReviewStatus");
+
+            migrationBuilder.DropTable(
+                name: "SubmissionFileMetaData");
 
             migrationBuilder.DropTable(
                 name: "SubmissionStatus");

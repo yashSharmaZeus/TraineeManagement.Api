@@ -48,5 +48,5 @@ public class TaskAssignment
         Remarks = request.Remarks;
     }
 
-    private TaskAssignment() { }
+    public TaskAssignment() { }
 }

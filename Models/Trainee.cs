@@ -46,6 +46,5 @@ public class Trainee
         CreatedDate = DateHelper.Now();
         UpdatedDate = DateHelper.Now();
     }
-
-    private Trainee() { }
+    public Trainee() { }
 }

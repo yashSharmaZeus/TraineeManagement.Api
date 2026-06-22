@@ -1,0 +1,27 @@
+services:
+  mysql:
+    image: docker-registry-002.zeuslearning.com/zeuslearning/mysql
+    container_name: mysql_db
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: my_database
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: docker-registry-002.zeuslearning.com/zeuslearning/redis
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass root
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mysql_data:
+  redis_data:
+
