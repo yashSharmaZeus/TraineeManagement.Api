@@ -14,12 +14,14 @@ public class SubmissionService : ISubmissionService
     private readonly ICacheService _cache;
     private readonly ILogger<SubmissionService> _logger;
     private readonly IFileStorageService _fileStorageService;
-    public SubmissionService(AppDbContext context, ILogger<SubmissionService> logger, IFileStorageService fileStorageService, ICacheService cache)
+    private readonly PublisherService _publisherService;
+    public SubmissionService(AppDbContext context, ILogger<SubmissionService> logger, IFileStorageService fileStorageService, ICacheService cache, PublisherService publisherService)
     {
         _context = context;
         _logger = logger;
         _fileStorageService = fileStorageService;
         _cache = cache;
+        _publisherService = publisherService;
     }
 
     public async Task<List<SubmissionResponse>> GetAll()
@@ -105,6 +107,10 @@ public class SubmissionService : ISubmissionService
 
         string username = await _context.User.Where(t => t.Id == userId).Select(u => u.Username).FirstOrDefaultAsync() ?? "";
 
+        SubmissionProcessingRequested message = new SubmissionProcessingRequested(SubmissionId,submissionFileMetaData.Id,1);
+        await _publisherService.PublishMessageAsync<SubmissionProcessingRequested>(message);
+        _logger.LogInformation("messageId: {}, correlationId: {}, submissionId: {}",message.MessageId,message.CorrelationId,message.SubmissionId);
+        
         return new SubmissionFileResponse(submissionFileMetaData, username);
     }
 
