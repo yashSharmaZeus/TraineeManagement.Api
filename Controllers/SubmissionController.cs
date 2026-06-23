@@ -90,7 +90,7 @@ public class SubmissionController : ControllerBase
     {   
         int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         SubmissionFileResponse response = await _submissionControllerService.UploadFile(userId,SubmissionId,request);
-        return Created($"/api/submissions/{SubmissionId}/files",response);
+        return Accepted($"/api/submissions/{SubmissionId}/files",response);
     }
 
 }
