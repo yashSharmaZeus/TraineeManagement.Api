@@ -4,10 +4,10 @@ services:
     container_name: mysql_db
     restart: always
     ports:
-      - "3307:3306"
+      - "${MYSQL_LOCAL_PORT}:${MYSQL_VIRTUAL_PORT}"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: my_database
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
+      MYSQL_DATABASE: ${MYSQL_DB}
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -16,12 +16,35 @@ services:
     container_name: redis_cache
     restart: always
     ports:
-      - "6379:6379"
-    command: redis-server --requirepass root
+      - "${REDIS_LOCAL_PORT}:${REDIS_VIRTUAL_PORT}"
+    command: redis-server --requirepass ${REDIS_PASS}
     volumes:
       - redis_data:/data
+  rabbitmq:
+    image: docker-registry-002.zeuslearning.com/zeuslearning/rabbitmq
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - ${RABBITMQ_SERVICE_PORT}:${RABBITMQ_SERVICE_PORT}
+      - ${RABBITMQ_UI_PORT}:${RABBITMQ_UI_PORT}
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    configs:
+      - source: rabbitmq-plugins
+        target: /etc/rabbitmq/enabled_plugins
+    volumes:
+      - rabbitmq_lib:/var/lib/rabbitmq/
+      - rabbitmq_log:/var/log/rabbitmq
+
+configs:
+  rabbitmq-plugins:
+    content: "[rabbitmq_management]."  
 
 volumes:
   mysql_data:
   redis_data:
-
+  rabbitmq_lib:
+    driver: local
+  rabbitmq_log:
+    driver: local
