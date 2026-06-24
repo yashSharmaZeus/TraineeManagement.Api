@@ -27,19 +27,29 @@ public class PublisherService
 
     public async Task PublishMessageAsync<T>(T message)
     {
+        string mainQueue = _configuration["RabbitMQ:QueueName"] ?? "queue";
+        string dlxExchange = "dlx.exchange";
+        string dlxRoutingKey = mainQueue + ".dead";
+
+        var arguments = new Dictionary<string, object?>
+        {
+            { "x-dead-letter-exchange", dlxExchange },
+            { "x-dead-letter-routing-key", dlxRoutingKey }
+        };
+
         await _channel.QueueDeclareAsync(
-            queue: _configuration["RabbitMQ:QueueName"]??"queue",
+            queue: mainQueue,
             durable: true,
             exclusive: false,
             autoDelete: false,
-            arguments: null);
+            arguments: arguments);
 
         string json = JsonSerializer.Serialize(message);
         byte[] body = Encoding.UTF8.GetBytes(json);
 
         await _channel.BasicPublishAsync(
             exchange: string.Empty,
-            routingKey: _configuration["RabbitMQ:QueueName"]??"queue",
+            routingKey: mainQueue,
             body: body);
     }
 

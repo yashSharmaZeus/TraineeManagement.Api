@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TraineeManagement.Api.Exceptions;
 using System.Security.Cryptography;
 using TraineeManagement.Api.Helpers;
+using System.Diagnostics;
 
 namespace TraineeManagement.Api.Services;
 
@@ -107,10 +108,20 @@ public class SubmissionService : ISubmissionService
 
         string username = await _context.User.Where(t => t.Id == userId).Select(u => u.Username).FirstOrDefaultAsync() ?? "";
 
-        SubmissionProcessingRequested message = new SubmissionProcessingRequested(SubmissionId,submissionFileMetaData.Id,1);
+        SubmissionProcessingRequested message = new SubmissionProcessingRequested(SubmissionId, submissionFileMetaData.Id, 1);
         await _publisherService.PublishMessageAsync<SubmissionProcessingRequested>(message);
-        _logger.LogInformation("messageId: {}, correlationId: {}, submissionId: {}",message.MessageId,message.CorrelationId,message.SubmissionId);
-        
+        _logger.LogInformation("messageId: {}, correlationId: {}, submissionId: {}", message.MessageId, message.CorrelationId, message.SubmissionId);
+
+        ProcessingJob processingJob = new ProcessingJob
+        {
+            Status = 0,
+            CorrelationId = message.CorrelationId,
+            ErrorSummary = ""
+        };
+        await _context.ProcessingJob.AddAsync(processingJob);
+
+        _context.SaveChanges();
+
         return new SubmissionFileResponse(submissionFileMetaData, username);
     }
 
