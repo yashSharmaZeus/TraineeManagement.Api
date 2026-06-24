@@ -22,6 +22,7 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<PublisherService>();
+builder.Services.AddScoped<IProcessingJobService,ProcessingJobService>();
 
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

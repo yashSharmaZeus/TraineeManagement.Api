@@ -1,10 +1,5 @@
 using TraineeManagement.Api.Exceptions;
-using TraineeManagement.Api.DTO;
 using TraineeManagement.Api.Data;
-using TraineeManagement.Api.Models;
-using System.Security.Cryptography;
-using System.Net.Http.Headers;
-using Microsoft.EntityFrameworkCore;
 
 namespace TraineeManagement.Api.Services;
 

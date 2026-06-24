@@ -20,10 +20,12 @@ public class AppDbContext : DbContext
     public DbSet<SubmissionStatus> SubmissionStatus { get; set; }
     public DbSet<ReviewStatus> ReviewStatus { get; set; }
     public DbSet<LearningTaskStatus> LearningTaskStatus { get; set; }
+    public DbSet<ProcessingJobStatus> ProcessingJobStatus { get; set; }
     public DbSet<TaskAssignment> TaskAssignment { get; set; }
     public DbSet<Submission> Submission { get; set; }
     public DbSet<Review> Review { get; set; }
     public DbSet<SubmissionFileMetaData> SubmissionFileMetaData { get; set; }
+    public DbSet<ProcessingJob> ProcessingJob { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,6 +54,12 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<SubmissionStatus>().HasData(
             new SubmissionStatus { Id = 1, StatusId = 0, Status = "Submitted" },
             new SubmissionStatus { Id = 2, StatusId = 1, Status = "Resubmitted" }
+        );
+        modelBuilder.Entity<ProcessingJobStatus>().HasData(
+            new ProcessingJobStatus { Id = 1, StatusId = 0, Status = "Queued" },
+            new ProcessingJobStatus { Id = 2, StatusId = 1, Status = "Processing" },
+            new ProcessingJobStatus { Id = 3, StatusId = 2, Status = "Completed" },
+            new ProcessingJobStatus { Id = 4, StatusId = 3, Status = "Failed" }
         );
         modelBuilder.Entity<ReviewStatus>()
         .Property(e => e.Status)
