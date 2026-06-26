@@ -9,18 +9,10 @@ public class PublisherService
     private readonly IConfiguration _configuration;
     private readonly IConnection _connection;
     private readonly IChannel _channel;
-    public PublisherService(IConfiguration configuration)
+
+    public PublisherService(IConfiguration configuration, ConnectionFactory factory)
     {
         _configuration = configuration;
-        ConnectionFactory factory = new  ConnectionFactory
-        {
-            HostName = _configuration["RabbitMQ:Host"] ?? "localhost",
-            Port = int.Parse(_configuration["RabbitMQ:Port"] ?? "5672"),
-            VirtualHost = "/",
-            UserName = _configuration["RabbitMQ:Username"] ?? "guest",
-            Password = _configuration["RabbitMQ:Password"] ?? "guest"
-        };
-        
         _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
         _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
     }

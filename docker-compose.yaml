@@ -1,6 +1,11 @@
 services:
   mysql:
     image: docker-registry-002.zeuslearning.com/zeuslearning/mysql
+    healthcheck:
+      test: ["CMD","mysqladmin","ping","-h","localhost","-u","root","-psecret"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     container_name: mysql_db
     restart: always
     ports:
@@ -13,6 +18,11 @@ services:
 
   redis:
     image: docker-registry-002.zeuslearning.com/zeuslearning/redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     container_name: redis_cache
     restart: always
     ports:
@@ -20,8 +30,14 @@ services:
     command: redis-server --requirepass ${REDIS_PASS}
     volumes:
       - redis_data:/data
+
   rabbitmq:
     image: docker-registry-002.zeuslearning.com/zeuslearning/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     container_name: rabbitmq
     restart: always
     ports:

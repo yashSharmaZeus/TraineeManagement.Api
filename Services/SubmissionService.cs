@@ -110,7 +110,7 @@ public class SubmissionService : ISubmissionService
 
         SubmissionProcessingRequested message = new SubmissionProcessingRequested(SubmissionId, submissionFileMetaData.Id, 1);
         await _publisherService.PublishMessageAsync<SubmissionProcessingRequested>(message);
-        _logger.LogInformation("messageId: {}, correlationId: {}, submissionId: {}", message.MessageId, message.CorrelationId, message.SubmissionId);
+        _logger.LogInformation("message published, messageId: {}, correlationId: {}, submissionId: {}", message.MessageId, message.CorrelationId, message.SubmissionId);
 
         ProcessingJob processingJob = new ProcessingJob
         {
