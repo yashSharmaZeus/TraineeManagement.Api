@@ -41,7 +41,7 @@ public class FileStorageService : IFileStorageService
         return uniqueFileName;
     }
 
-    public Task<FileStream> OpenReadAsync(string fileName)
+    public async Task<FileStream> OpenReadAsync(string fileName)
     {
         string fullPath = getFullPath(fileName);
         if (!File.Exists(fullPath))
@@ -51,13 +51,13 @@ public class FileStorageService : IFileStorageService
         }
         FileStream stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
-        return Task.FromResult(stream);
+        return stream;
     }
 
-    public Task<bool> ExistsAsync(string fileName)
+    public async Task<bool> ExistsAsync(string fileName)
     {
         string fullPath = getFullPath(fileName);
-        return Task.FromResult(File.Exists(fullPath));
+        return File.Exists(fullPath);
     }
 
     public async Task<bool> DeleteAsync(string fileName)

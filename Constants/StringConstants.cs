@@ -72,4 +72,6 @@ public class StringConstant
     public const string REVIEWED_DATE = "Review Date required";
 
     public const string FILE_REQUIRED = "File is required";
+
+    public const string DUE_DATE_EXCEPTION = "DueDate should be greater than current date";
 }

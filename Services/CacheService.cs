@@ -8,7 +8,7 @@ public class CacheService : ICacheService
     private readonly IDistributedCache _cache;
     private readonly ILogger<CacheService> _logger;
 
-    public CacheService(IDistributedCache cache,ILogger<CacheService> logger)
+    public CacheService(IDistributedCache cache, ILogger<CacheService> logger)
     {
         _cache = cache;
         _logger = logger;
@@ -16,40 +16,73 @@ public class CacheService : ICacheService
 
     public async Task<T?> GetDataAsync<T>(string Key)
     {
-        string? cachedData = await _cache.GetStringAsync(Key);
-
-        if (string.IsNullOrEmpty(cachedData))
+        try
         {
-            _logger.LogInformation("cache miss {}",Key);
+
+            string? cachedData = await _cache.GetStringAsync(Key);
+
+            if (string.IsNullOrEmpty(cachedData))
+            {
+                _logger.LogInformation("cache miss {}", Key);
+                return default;
+            }
+
+            _logger.LogInformation("cache hit {}", Key);
+            return JsonSerializer.Deserialize<T>(cachedData);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Redis error during GET for key {key}. Falling back to source.", Key);
             return default;
         }
-
-        _logger.LogInformation("cache hit {}",Key);
-        return JsonSerializer.Deserialize<T>(cachedData);
     }
 
-    public async Task SetDataAsync<T>(string Key,T data)
+    public async Task SetDataAsync<T>(string Key, T data)
     {
-        DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
+        try
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
-            SlidingExpiration = TimeSpan.FromMinutes(5)
-        };
 
-        string JsonData = JsonSerializer.Serialize(data);
-        _logger.LogInformation("cache set {}",Key);
+            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                SlidingExpiration = TimeSpan.FromMinutes(5)
+            };
 
-        await _cache.SetStringAsync(Key,JsonData,options);
+            string JsonData = JsonSerializer.Serialize(data);
+            await _cache.SetStringAsync(Key, JsonData, options);
+
+            _logger.LogInformation("cache set {}", Key);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Redis error during SET for key {key}.", Key);
+        }
     }
 
     public async Task DeleteDataAsync(string Key)
     {
-        _logger.LogInformation("cache deleted {}",Key);
-        await _cache.RemoveAsync(Key);
+        try
+        {
+
+            await _cache.RemoveAsync(Key);
+            _logger.LogInformation("cache deleted {}", Key);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Redis error during DELETE for key {key}.", Key);
+        }
     }
 
     public async Task<bool> KeyExistsAsync(string Key)
     {
-        return await _cache.GetAsync(Key) != null;
+        try
+        {
+            return await _cache.GetAsync(Key) != null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Redis error during EXIST check for key {key}.", Key);
+            return default;
+        }
     }
 }

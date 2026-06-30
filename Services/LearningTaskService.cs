@@ -4,6 +4,7 @@ using TraineeManagement.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using TraineeManagement.Api.Helpers;
 using TraineeManagement.Api.Exceptions;
+using TraineeManagement.Api.Constants;
 
 namespace TraineeManagement.Api.Services;
 
@@ -57,14 +58,25 @@ public class LearningTaskService : ILearningTaskService
         return new LearningTaskResponse(task);
     }
     public async Task<LearningTaskResponse> AddNew(CreateLearningTaskRequest request)
-    {
+    {   
+        if ( request.DueDate < DateHelper.Now())
+        {   
+            _logger.LogError("DueDate should be greater than current date ,Learning Task Title: {}:",request.Title);
+            throw new BadRequestException(StringConstant.DUE_DATE_EXCEPTION);
+        }
         LearningTask task = new LearningTask(request);
         await _context.LearningTask.AddAsync(task);
         await _context.SaveChangesAsync();
         return new LearningTaskResponse(task);
     }
     public async Task<LearningTaskResponse> UpdateTask(int id, UpdateLearningTaskRequest request)
-    {
+    {   
+        
+        if ( request.DueDate < DateHelper.Now())
+        {   
+            _logger.LogError("DueDate should be greater than current date ,Learning Task Title: {}:",request.Title);
+            throw new BadRequestException(StringConstant.DUE_DATE_EXCEPTION);
+        }
         LearningTask? task = await _context.LearningTask.FindAsync(id);
         if (task == null)        
         {
