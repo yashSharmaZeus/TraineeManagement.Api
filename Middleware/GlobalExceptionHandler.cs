@@ -22,6 +22,8 @@ public class GlobalExceptionHandler : IExceptionHandler
             NotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
             BadRequestException => (StatusCodes.Status400BadRequest, "Bad Request"),
             InvalidCredential => (StatusCodes.Status401Unauthorized, "Invalid Credentials"),
+            UnsupportedMediaType => (StatusCodes.Status415UnsupportedMediaType, "Unsupported Media Type"),
+            PayLoadTooLarge => (StatusCodes.Status413PayloadTooLarge, "Payload too large"),
             _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
         };
 

@@ -43,4 +43,12 @@ public class GlobalEnums
         ChangesRequired = 1,
         Rejected = 2
     }
+
+    public enum ProcessingJobStatus
+    {
+        Queued = 0,
+        Processing = 1,
+        Completed = 2,
+        Failed = 3 
+    }
 }

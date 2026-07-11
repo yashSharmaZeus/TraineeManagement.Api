@@ -11,8 +11,8 @@ using TraineeManagement.Api.Data;
 namespace TraineeManagement.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260616070634_databaseschemaupdate7")]
-    partial class databaseschemaupdate7
+    [Migration("20260622083402_dockernewtest")]
+    partial class dockernewtest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -353,6 +353,47 @@ namespace TraineeManagement.Api.Migrations
                     b.ToTable("Submission");
                 });
 
+            modelBuilder.Entity("TraineeManagement.Api.Models.SubmissionFileMetaData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Checksum")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("Varchar(20)");
+
+                    b.Property<string>("GeneratedStorageName")
+                        .IsRequired()
+                        .HasColumnType("Varchar(50)");
+
+                    b.Property<string>("OriginalFilName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SubmissionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamps")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UploadedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubmissionId");
+
+                    b.ToTable("SubmissionFileMetaData");
+                });
+
             modelBuilder.Entity("TraineeManagement.Api.Models.TaskAssignment", b =>
                 {
                     b.Property<int>("Id")
@@ -465,11 +506,11 @@ namespace TraineeManagement.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 6, 16, 7, 6, 34, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2026, 6, 22, 8, 34, 1, 0, DateTimeKind.Unspecified),
                             Email = "Admin@gmail.com",
                             PasswordHash = "AQAAAAIAAYagAAAAEKZbq3NQIBWQ2/R+xBuFq1yCCAZ2bfdBV/hwvTtkDT2nT/6EblN6/I/98TZCSNlVMQ==",
                             Role = "Admin",
-                            UpdateDate = new DateTime(2026, 6, 16, 7, 6, 34, 0, DateTimeKind.Unspecified),
+                            UpdateDate = new DateTime(2026, 6, 22, 8, 34, 1, 0, DateTimeKind.Unspecified),
                             Username = "Admin"
                         });
                 });
@@ -540,6 +581,17 @@ namespace TraineeManagement.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("TaskAssignment");
+                });
+
+            modelBuilder.Entity("TraineeManagement.Api.Models.SubmissionFileMetaData", b =>
+                {
+                    b.HasOne("TraineeManagement.Api.Models.Submission", "Submission")
+                        .WithMany()
+                        .HasForeignKey("SubmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Submission");
                 });
 
             modelBuilder.Entity("TraineeManagement.Api.Models.TaskAssignment", b =>

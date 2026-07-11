@@ -21,7 +21,7 @@ public class AuthService : IAuthService
     {
         string Username = request.Username;
         string Password = request.Password;
-        Console.WriteLine(ComputePasswordHash(Username, Password));
+        
         User? dbUser = await _context.User.FirstOrDefaultAsync(u => u.Username == Username);
         if (dbUser == null)
         {

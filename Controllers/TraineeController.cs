@@ -46,7 +46,7 @@ public class TraineesController : ControllerBase
     /// <response code="200">Returns Trainee with matching Id.</response>
     /// <response code="401">If the user is not authenticated.</response>
     /// <response code="403">If the user does not have the Admin or Trainee role.</response>
-
+    /// <response code="404">Trainee with given id not</response>
     [Authorize(Roles = "Admin,Trainee")]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)

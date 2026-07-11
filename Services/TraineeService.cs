@@ -10,11 +10,13 @@ namespace TraineeManagement.Api.Services;
 public class TraineeService : ITraineeService
 {
     private readonly AppDbContext _context;
+    private readonly ICacheService _cache;
     private readonly ILogger<TraineeService> _logger;
-    public TraineeService(AppDbContext context,ILogger<TraineeService> logger)
+    public TraineeService(AppDbContext context, ILogger<TraineeService> logger, ICacheService cache)
     {
         _context = context;
         _logger = logger;
+        _cache = cache;
     }
 
     public async Task<PagedResponse<TraineeResponse>> GetAll(string? search = null, int pageNumber = 1, int pageSize = 10, string? status = null)
@@ -46,13 +48,21 @@ public class TraineeService : ITraineeService
 
     public async Task<TraineeResponse> GetById(int id)
     {
+        string CacheKey = $"trainee:{id}";
+        Trainee? TraineeCache = await _cache.GetDataAsync<Trainee>(CacheKey);
+        if (TraineeCache != null)
+        {
+            return new TraineeResponse(TraineeCache);
+        }
+
         Trainee? trainee = await _context.Trainees.FindAsync(id);
         if (trainee == null)
         {
-            _logger.LogInformation("Trainee with trainee id: {id} not found",id);
+            _logger.LogInformation("Trainee with trainee id: {id} not found", id);
             throw new NotFoundException($"Trainee with trainee id: {id} not found");
         }
-        ;
+
+        await _cache.SetDataAsync<Trainee>(CacheKey, trainee);
         return new TraineeResponse(trainee);
     }
 
@@ -69,7 +79,7 @@ public class TraineeService : ITraineeService
         Trainee? trainee = await _context.Trainees.FindAsync(id);
         if (trainee == null)
         {
-            _logger.LogInformation("Trainee with trainee id: {id} not found",id);
+            _logger.LogInformation("Trainee with trainee id: {id} not found", id);
             throw new NotFoundException($"Trainee with trainee id: {id} not found");
         }
         trainee.FirstName = request.FirstName;
@@ -78,6 +88,13 @@ public class TraineeService : ITraineeService
         trainee.TechStack = request.TechStack;
         trainee.Status = request.Status;
         trainee.UpdatedDate = DateHelper.Now();
+
+        string CacheKey = $"trainee:{id}";
+        if (await _cache.KeyExistsAsync(CacheKey))
+        {
+            await _cache.SetDataAsync<Trainee>(CacheKey, trainee);
+        }
+
         await _context.SaveChangesAsync();
 
         return await GetById(id);
@@ -89,10 +106,13 @@ public class TraineeService : ITraineeService
 
         if (trainee == null)
         {
-            _logger.LogInformation("Trainee with trainee id: {id} not found",id);
+            _logger.LogInformation("Trainee with trainee id: {id} not found", id);
             throw new NotFoundException($"Trainee with trainee id: {id} not found");
         }
 
+        string CacheKey = $"trainee:{id}";
+
+        await _cache.DeleteDataAsync(CacheKey);
         _context.Trainees.Remove(trainee);
         await _context.SaveChangesAsync();
 
