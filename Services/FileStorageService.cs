@@ -1,20 +1,17 @@
 using TraineeManagement.Api.Exceptions;
-using TraineeManagement.Api.Data;
 
 namespace TraineeManagement.Api.Services;
 
 public class FileStorageService : IFileStorageService
 {
     public readonly string _storageRoot;
-    private readonly AppDbContext _context;
     public readonly ILogger<FileStorageService> _logger;
 
-    public FileStorageService(IConfiguration configuration, ILogger<FileStorageService> logger, AppDbContext context)
+    public FileStorageService(IConfiguration configuration, ILogger<FileStorageService> logger)
     {
-        _storageRoot = configuration["FileStorageSettings: StorageRoot"] ?? "Storage";
+        _storageRoot = configuration["FileStorageSettings:StorageRoot"] ?? "Storage";
         Directory.CreateDirectory(_storageRoot);
         _logger = logger;
-        _context = context;
     }
 
     public string getFullPath(string fileName)
@@ -44,6 +41,7 @@ public class FileStorageService : IFileStorageService
     public async Task<FileStream> OpenReadAsync(string fileName)
     {
         string fullPath = getFullPath(fileName);
+        Console.WriteLine(fullPath);
         if (!File.Exists(fullPath))
         {
             _logger.LogInformation("Requested File does not exists: {}", fileName);

@@ -40,8 +40,8 @@ public class TraineeService : ITraineeService
             query = query.Where(t => t.Status.ToString() == term);
         }
 
-        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         int TotalCount = await query.CountAsync();
+        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         List<TraineeResponse> trainees = await query.Select(t => new TraineeResponse(t)).ToListAsync();
         return new PagedResponse<TraineeResponse>(trainees, TotalCount, pageNumber, pageSize);
     }

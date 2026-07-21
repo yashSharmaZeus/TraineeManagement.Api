@@ -39,8 +39,8 @@ public class LearningTaskService : ILearningTaskService
             query = query.Where(t => t.Status.ToString() == term);
         }
 
-        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         int TotalCount = await query.CountAsync();
+        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
         List<LearningTaskResponse> mentors = await query.Select(t => new LearningTaskResponse(t)).ToListAsync();
 

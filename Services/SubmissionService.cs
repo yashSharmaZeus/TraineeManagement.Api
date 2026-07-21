@@ -3,9 +3,7 @@ using TraineeManagement.Api.Data;
 using TraineeManagement.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using TraineeManagement.Api.Exceptions;
-using System.Security.Cryptography;
 using TraineeManagement.Api.Helpers;
-using System.Diagnostics;
 
 namespace TraineeManagement.Api.Services;
 
@@ -104,7 +102,7 @@ public class SubmissionService : ISubmissionService
 
         await _context.SubmissionFileMetaData.AddAsync(submissionFileMetaData);
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         string username = await _context.User.Where(t => t.Id == userId).Select(u => u.Username).FirstOrDefaultAsync() ?? "";
 
@@ -120,7 +118,7 @@ public class SubmissionService : ISubmissionService
         };
         await _context.ProcessingJob.AddAsync(processingJob);
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return new SubmissionFileResponse(submissionFileMetaData, username);
     }

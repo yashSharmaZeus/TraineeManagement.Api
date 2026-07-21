@@ -37,8 +37,8 @@ public class MentorService : IMentorService
             query = query.Where(t => t.Status.ToString() == term);
         }
 
-        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         int TotalCount = await query.CountAsync();
+        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
         List<MentorResponse> mentors = await query.Select(t => new MentorResponse(t)).ToListAsync();
 
